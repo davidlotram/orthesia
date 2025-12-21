@@ -1,0 +1,80 @@
+<!doctype html><html lang="fr"><head>
+<meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Orthésia — Accès par classe</title><link rel="stylesheet" href="assets/style.css"/></head>
+<body><div class="container">
+<div class="topbar"><div class="brand"><div class="logo" aria-hidden="true"></div><div>
+<h1 class="h1">Orthésia — Accès par classe</h1>
+<div class="sub">Site de consultation (lecture seule). Chaque classe accède à son espace.</div>
+</div></div><div class="pill">📅 Mis à jour : 21/12/2025 12:51</div></div>
+
+<div class="hero">
+  <div class="card">
+    <h2>🔐 Entrer le code de ta classe</h2>
+    <p>Tu reçois un code (donné par le professeur). Le code ouvre uniquement l’espace de ta classe.</p>
+    <input id="code" class="input" placeholder="Ex : PROUST-CLASSE" autocomplete="off"/>
+    <div style="display:flex; gap:10px; margin-top:12px; flex-wrap:wrap">
+      <button id="go" class="btn btnPrimary" type="button">Ouvrir l’espace</button>
+      <button id="help" class="btn" type="button">Aide</button>
+    </div>
+    <div id="msg" class="hint"></div>
+    <div id="warn" class="warn" style="display:none"></div>
+    <div class="hint">⚠️ <b>Note importante</b> : ce “code” évite surtout qu’un élève clique sur la mauvaise classe.<br/>
+    Pour une séparation “inviolable”, il faut des <b>droits d’accès</b> (ENT / Drive par groupes, etc.).</div>
+  </div>
+
+  <div class="card">
+    <h2>✅ Ce que les élèves peuvent faire</h2>
+    <p>Consulter : Carte • Équipe • Quêtes • Progrès • Boss • Succès.</p>
+    <div class="hr"></div>
+    <h2>🚫 Ce que les élèves ne peuvent pas faire</h2>
+    <p>Modifier la progression officielle (elle reste dans la version prof).</p>
+    <div class="footer">Astuce : publie uniquement les fichiers <b>view</b> + les portraits <b>.png</b>.</div>
+  </div>
+</div>
+
+<div class="grid">
+  <div class="card tile">
+    <h2>📌 Où déposer les fichiers</h2>
+    <p>Dans <code>classes/&lt;classe&gt;/</code> : le fichier <b>view</b> + les <b>.png</b> de la classe.</p>
+    <a class="btn" href="README.html">📘 Guide d’installation</a>
+  </div>
+  <div class="card tile">
+    <h2>🎨 Style “pro”</h2>
+    <p>Interface propre, responsive, et cohérente avec Orthésia.</p>
+    <div class="hint">Tu peux changer les couleurs dans <code>assets/style.css</code>.</div>
+  </div>
+  <div class="card tile">
+    <h2>🧭 Accès direct (prof)</h2>
+    <p>Raccourcis pratiques pour tester.</p>
+    <a class="btn" href="portail_prof.html">🧑‍🏫 Portail prof</a>
+  </div>
+</div>
+</div>
+
+<script src="assets/config.js"></script>
+<script>
+(function(){
+  const cfg = window.ORTHESIA_CONFIG || {classes:[]};
+  const byCode = new Map((cfg.classes||[]).map(c => [String(c.code).trim().toLowerCase(), c]));
+  const msg = document.getElementById("msg");
+  const warn = document.getElementById("warn");
+  function show(text, bad){
+    if(bad){ warn.style.display="block"; warn.textContent=text; msg.textContent=""; }
+    else { warn.style.display="none"; warn.textContent=""; msg.textContent=text || ""; }
+  }
+  function go(){
+    const raw = document.getElementById("code").value || "";
+    const key = raw.trim().toLowerCase();
+    if(!key){ show("Entre le code de ta classe, puis clique sur “Ouvrir l’espace”.", true); return; }
+    const c = byCode.get(key);
+    if(!c){ show("Code non reconnu. Vérifie les majuscules / tirets et réessaie.", true); return; }
+    sessionStorage.setItem("orthesia_class", c.slug);
+    window.location.href = "classes/" + c.slug + "/index.html";
+  }
+  document.getElementById("go").addEventListener("click", go);
+  document.getElementById("code").addEventListener("keydown", (e)=>{ if(e.key==="Enter") go(); });
+  document.getElementById("help").addEventListener("click", ()=>{ show("Si tu n’as pas le code, demande-le au professeur. (Un code = une classe.)", false); });
+  show("➡️ Entre le code et ouvre l’espace de ta classe.", false);
+})();
+</script>
+</body></html>
