@@ -5,6 +5,60 @@
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <title>Orthésia — Accès par classe</title>
 <link rel="stylesheet" href="assets/style.css"/>
+  <style>
+/* ✅ HOTFIX: empêche tout blocage de clic sur PC */
+#code { position: relative; z-index: 10; }
+.overlay { display:none; pointer-events:none; }
+.hamburger { display:none; }
+
+/* ✅ Mobile: hamburger + tiroir */
+@media (max-width: 820px){
+  .hamburger{
+    display:inline-flex;
+    position:fixed;
+    top:12px; right:12px;
+    z-index:9999;
+    width:46px;height:46px;
+    border-radius:14px;
+    border:1px solid rgba(255,255,255,.16);
+    background:rgba(10,16,30,.55);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    align-items:center;justify-content:center;
+    gap:5px;flex-direction:column;
+  }
+  .hamburger span{ width:20px;height:2px; background:#fff; display:block; border-radius:2px; }
+
+  .overlay{
+    display:block;
+    position:fixed; inset:0;
+    z-index:9998;
+    background:rgba(0,0,0,.45);
+    opacity:0;
+    pointer-events:none;
+    transition:opacity .18s ease;
+  }
+  .overlay.show{ opacity:1; pointer-events:auto; }
+
+  #sidebar{
+    display:block;
+    position:fixed;
+    top:0; left:0;
+    height:100vh;
+    width:min(88vw, 360px);
+    z-index:9999;
+    background:rgba(10,16,30,.95);
+    border-right:1px solid rgba(255,255,255,.12);
+    transform:translateX(-110%);
+    transition:transform .22s ease;
+    overflow:auto;
+  }
+  #sidebar.open{ transform:translateX(0); }
+
+  .container{ padding-top:70px; }
+}
+</style>
+
 </head>
 
 <body>
