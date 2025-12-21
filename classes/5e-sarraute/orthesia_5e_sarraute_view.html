@@ -1,0 +1,364 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Orthésia — Consultation</title>
+<style>
+:root{--bg:#0b1020;--text:#f5f5f5;--muted:#c9c9c9;--line:rgba(255,255,255,.12);--accent:rgba(139,211,255,.16);}
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+  background:radial-gradient(1200px 700px at 20% 10%, #18214a 0%, var(--bg) 55%),
+             radial-gradient(900px 600px at 90% 30%, #1a3b3b 0%, rgba(0,0,0,0) 60%);
+  color:var(--text)}
+body.wm::before{content:attr(data-wm);position:fixed;inset:0;display:flex;align-items:center;justify-content:center;
+  font-size:clamp(18px,3.2vw,40px);letter-spacing:.6px;color:rgba(255,255,255,.07);transform:rotate(-18deg);
+  pointer-events:none;z-index:0;white-space:nowrap;user-select:none}
+header{padding:18px;border-bottom:1px solid var(--line);background:rgba(18,26,51,.55);backdrop-filter:blur(8px);
+  position:sticky;top:0;z-index:10;display:flex;gap:10px;align-items:flex-start;justify-content:space-between;flex-wrap:wrap}
+.title h1{margin:0;font-size:16px}
+.title small{color:var(--muted);display:block;margin-top:2px}
+.updated{margin-top:6px;color:var(--muted);font-size:12px}
+.pillrow{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.pill{padding:6px 10px;border:1px solid var(--line);background:rgba(255,255,255,.06);border-radius:999px;font-size:12px}
+main{max-width:1100px;margin:0 auto;padding:18px;position:relative;z-index:1}
+.grid{display:grid;grid-template-columns:280px 1fr;gap:14px}
+@media(max-width:900px){.grid{grid-template-columns:1fr}}
+.card{border:1px solid var(--line);background:rgba(18,26,51,.55);border-radius:16px;padding:14px;box-shadow:0 18px 50px rgba(0,0,0,.35)}
+.muted{color:var(--muted);font-size:13px;line-height:1.35}
+.mini{color:var(--muted);font-size:12px;line-height:1.35}
+.hr{height:1px;background:var(--line);margin:12px 0}
+.nav button{width:100%;padding:10px 12px;border-radius:12px;border:1px solid var(--line);background:rgba(255,255,255,.06);
+  color:var(--text);cursor:pointer;text-align:left;margin-bottom:8px}
+.nav button.active{background:var(--accent);border-color:rgba(139,211,255,.35)}
+.map{position:relative;border:1px solid var(--line);border-radius:16px;overflow:hidden;min-height:440px;background:rgba(0,0,0,.20)}
+.mapCam{position:absolute;inset:0}
+.node{position:absolute;width:min(160px,42vw);padding:8px 9px;border-radius:14px;border:1px solid var(--line);background:rgba(0,0,0,.22)}
+.node h3{margin:0 0 3px;font-size:12px}
+.node small{color:var(--muted);font-size:11px;line-height:1.15}
+.badge{display:inline-block;margin-top:8px;padding:4px 8px;border-radius:999px;font-size:12px;border:1px solid var(--line);background:rgba(255,255,255,.06)}
+.node.selected{background:rgba(139,211,255,.18);border-color:rgba(139,211,255,.45)}
+.list{display:grid;grid-template-columns:repeat(2,minmax(240px,1fr));gap:10px}
+@media(max-width:900px){.list{grid-template-columns:1fr}}
+.char{border:1px solid var(--line);border-radius:14px;padding:12px;background:rgba(0,0,0,.18)}
+.charTop{display:flex;justify-content:space-between;gap:10px;align-items:center}
+.tag{font-size:12px;color:var(--muted)}
+.bar{height:10px;border-radius:999px;background:rgba(255,255,255,.08);overflow:hidden;border:1px solid var(--line);margin-top:10px}
+.bar>div{height:100%;width:0%}
+.barXp>div{background:linear-gradient(90deg, rgba(139,211,255,.9), rgba(157,255,176,.9))}
+.stats{margin-top:8px;display:flex;gap:10px;flex-wrap:wrap;color:var(--muted);font-size:12px}
+.avatarBox{width:44px;height:44px;border-radius:12px;overflow:hidden;border:1px solid var(--line);background:rgba(255,255,255,.06);
+  display:flex;align-items:center;justify-content:center;flex:0 0 auto}
+.avatarBox img{width:100%;height:100%;object-fit:cover}
+.avatarFallback{font-size:22px}
+footer{padding:14px 18px;color:var(--muted);font-size:12px;text-align:center;position:relative;z-index:1}
+.hpWrap{border:1px solid rgba(255,255,255,.14);border-radius:14px;overflow:hidden;background:rgba(255,255,255,.06);height:14px}
+.hpFill{height:100%;width:100%;transition:width .35s ease;background:linear-gradient(90deg, rgba(157,255,176,.95), rgba(139,211,255,.75))}
+.hpLabel{font-size:12px;color:rgba(255,255,255,.78);margin:6px 0 10px}
+.table{width:100%;border-collapse:separate;border-spacing:0 8px}
+.table td,.table th{padding:8px 10px;border:1px solid rgba(255,255,255,.12);background:rgba(0,0,0,.18)}
+.table th{color:rgba(255,255,255,.82);font-size:12px;text-align:left}
+.pillOk{display:inline-block;padding:3px 8px;border-radius:999px;border:1px solid rgba(255,255,255,.16);background:rgba(157,255,176,.15);font-size:12px}
+.pillTodo{display:inline-block;padding:3px 8px;border-radius:999px;border:1px solid rgba(255,255,255,.16);background:rgba(255,231,136,.12);font-size:12px}
+</style>
+</head>
+<body>
+<header>
+  <div class="title">
+    <h1 id="pageTitle"></h1>
+    <small id="pageSubtitle"></small>
+    <div class="updated" id="updatedAt" style="display:none"></div>
+  </div>
+  <div class="pillrow">
+    <span class="pill" id="pillChapter">Zone : —</span>
+    <span class="pill" id="pillTeam">Équipe : —</span>
+    <span class="pill" id="pillXP">XP total : —</span>
+  </div>
+</header>
+
+<main>
+  <div class="grid">
+    <section class="card nav">
+      <h2 style="margin:0 0 8px;font-size:14px">Menu</h2>
+      <button class="active" data-view="map">🗺️ Carte</button>
+      <button data-view="roster">👥 Équipe</button>
+      <button data-view="quests">📜 Quêtes</button>
+      <button data-view="progress">🏆 Progrès</button>
+      <div class="hr"></div>
+      <p class="muted"><b>Lecture seule :</b> tu peux consulter les avancées, rien modifier.</p>
+    </section>
+
+    <section class="card" id="view"></section>
+  </div>
+</main>
+
+<footer id="footerText"></footer>
+
+<script type="application/json" id="META">{"title":"Le Royaume d’Orthésia — 5e Sarraute","subtitle":"Version consultation (lecture seule) — aucune modification possible ici.","footer":"Page de consultation. Les mises à jour sont publiées par le professeur.","watermark":"Orthésia — 5e Sarraute — Consultation","watermarkOn":true,"stampOn":true,"updatedAt":"21/12/2025 à 14:06"}</script>
+<script type="application/json" id="STATE">{"zoneId":"plaine","party":[{"id":"s0","name":"Anaë","cls":"Scribe","trait":"rigueur","role":null,"quest":"Quête : rester concentré(e) et éviter la dispersion, et t’appuyer sur une méthode simple : lire, planifier, relire.","xp":0,"hp":30,"hpMax":30,"portrait":"anae.png","icon":"✒️"},{"id":"s1","name":"Cassandra","cls":"Éclaireur","trait":"curiosité","role":null,"quest":"Quête : oser davantage et te faire confiance, et participer, même brièvement, pour faire grandir tes idées.","xp":0,"hp":30,"hpMax":30,"portrait":"cassandra.png","icon":"✨"},{"id":"s2","name":"Corentin","cls":"Gardien","trait":"stabilité","role":null,"quest":"Quête : rester concentré(e) et éviter la dispersion, et t’appuyer sur une méthode simple : lire, planifier, relire.","xp":0,"hp":30,"hpMax":30,"portrait":"corentin.png","icon":"🛡️"},{"id":"s3","name":"Elmas","cls":"Savant","trait":"application","role":null,"quest":"Quête : t’appuyer sur une méthode simple : lire, planifier, relire.","xp":0,"hp":30,"hpMax":30,"portrait":"elmas.png","icon":"📘"},{"id":"s4","name":"Julian","cls":"Apprenti","trait":"persévérance","role":null,"quest":"Quête : rester concentré(e) et éviter la dispersion, et t’appuyer sur une méthode simple : lire, planifier, relire.","xp":0,"hp":30,"hpMax":30,"portrait":"julian.png","icon":"🌱"},{"id":"s5","name":"Léa","cls":"Scribe","trait":"créativité","role":null,"quest":"Quête : participer, même brièvement, pour faire grandir tes idées.","xp":0,"hp":30,"hpMax":30,"portrait":"lea.png","icon":"📝"},{"id":"s6","name":"Liam","cls":"Éclaireur","trait":"énergie","role":null,"quest":"Quête : oser davantage et te faire confiance, et participer, même brièvement, pour faire grandir tes idées.","xp":0,"hp":30,"hpMax":30,"portrait":"liam.png","icon":"🎙️"},{"id":"s7","name":"Lily","cls":"Messagère","trait":"douceur","role":null,"quest":"Quête : oser davantage et te faire confiance, et participer, même brièvement, pour faire grandir tes idées.","xp":0,"hp":30,"hpMax":30,"portrait":"lily.png","icon":"💬"},{"id":"s8","name":"Loucas","cls":"Gardien","trait":"courage","role":null,"quest":"Quête : rester concentré(e) et éviter la dispersion, et oser davantage et te faire confiance.","xp":0,"hp":30,"hpMax":30,"portrait":"loucas.png","icon":"🛡️"},{"id":"s9","name":"Louis-Claude","cls":"Savant","trait":"progression","role":null,"quest":"Quête : rester concentré(e) et éviter la dispersion, et t’appuyer sur une méthode simple : lire, planifier, relire.","xp":0,"hp":30,"hpMax":30,"portrait":"louis_claude.png","icon":"🔍"},{"id":"s10","name":"Louise","cls":"Scribe","trait":"sérieux","role":null,"quest":"Quête : avancer pas à pas, avec persévérance.","xp":0,"hp":30,"hpMax":30,"portrait":"louise.png","icon":"📜"},{"id":"s11","name":"Maël","cls":"Apprenti","trait":"volonté","role":null,"quest":"Quête : rester concentré(e) et éviter la dispersion, et t’appuyer sur une méthode simple : lire, planifier, relire.","xp":0,"hp":30,"hpMax":30,"portrait":"mael.png","icon":"🌱"},{"id":"s12","name":"Makar","cls":"Éclaireur","trait":"audace","role":null,"quest":"Quête : participer, même brièvement, pour faire grandir tes idées.","xp":0,"hp":30,"hpMax":30,"portrait":"makar.png","icon":"⚡"},{"id":"s13","name":"Mathéo","cls":"Gardien","trait":"régularité","role":null,"quest":"Quête : rester concentré(e) et éviter la dispersion, et t’appuyer sur une méthode simple : lire, planifier, relire.","xp":0,"hp":30,"hpMax":30,"portrait":"matheo.png","icon":"🧰"},{"id":"s14","name":"Paolo","cls":"Savant","trait":"logique","role":null,"quest":"Quête : t’appuyer sur une méthode simple : lire, planifier, relire.","xp":0,"hp":30,"hpMax":30,"portrait":"paolo.png","icon":"🧠"},{"id":"s15","name":"Ruben","cls":"Éclaireur","trait":"entrain","role":null,"quest":"Quête : oser davantage et te faire confiance, et participer, même brièvement, pour faire grandir tes idées.","xp":0,"hp":30,"hpMax":30,"portrait":"ruben.png","icon":"🤝"},{"id":"s16","name":"Sarah","cls":"Scribe","trait":"finesse","role":null,"quest":"Quête : t’appuyer sur une méthode simple : lire, planifier, relire.","xp":0,"hp":30,"hpMax":30,"portrait":"sarah.png","icon":"🖋️"},{"id":"s17","name":"Shayna","cls":"Apprenti","trait":"persévérance","role":null,"quest":"Quête : t’appuyer sur une méthode simple : lire, planifier, relire, et oser davantage et te faire confiance.","xp":0,"hp":30,"hpMax":30,"portrait":"shayna.png","icon":"🌼"},{"id":"s18","name":"Sevin","cls":"Messager","trait":"adaptation","role":null,"quest":"Quête : oser davantage et te faire confiance, et participer, même brièvement, pour faire grandir tes idées.","xp":0,"hp":30,"hpMax":30,"portrait":"sevin.png","icon":"👤"}],"louaneIntroDone":false,"quests":[{"id":"q1","title":"Le Parchemin de la Méthode","done":false,"reward":6,"desc":"Relire, corriger, améliorer un écrit."},{"id":"q2","title":"La Clef de la Confiance","done":false,"reward":6,"desc":"Oser une participation (même courte)."},{"id":"q3","title":"Le Bouclier de l’Attention","done":false,"reward":6,"desc":"Tenir une phase de travail sans distraction."}],"boss":{"id":"boss_t1","name":"Le Grand Brouillard du Trimestre","hp":120,"hpMax":120,"weakness":"methode","status":"active","log":["Le brouillard s’épaissit… mais l’équipe avance.","Une phrase bien construite dissipe une ombre."]},"achievements":[{"id":"focus_10","title":"10 minutes de focus","desc":"La classe a tenu 10 minutes sans interruption.","unlocked":false,"date":""},{"id":"copies_30","title":"30 relectures","desc":"30 copies relues sérieusement.","unlocked":false,"date":""},{"id":"oral_10","title":"10 prises de parole","desc":"10 élèves ont participé à l’oral.","unlocked":false,"date":""}],"periods":[{"id":"jan","label":"Janvier","goal":"Reprendre confiance","boss":"Le Doute persistant","teamXp":0,"questsDone":0,"notes":""},{"id":"feb","label":"Février","goal":"Se concentrer","boss":"La Dispersion","teamXp":0,"questsDone":0,"notes":""},{"id":"mar","label":"Mars","goal":"Oser participer","boss":"La Peur de se tromper","teamXp":0,"questsDone":0,"notes":""},{"id":"apr","label":"Avril","goal":"Tenir l’effort","boss":"La Fatigue","teamXp":0,"questsDone":0,"notes":""},{"id":"may","label":"Mai","goal":"Être rigoureux","boss":"La Précipitation","teamXp":0,"questsDone":0,"notes":""},{"id":"jun","label":"Juin","goal":"Boss final","boss":"L’Ombre d’Orthésia","teamXp":0,"questsDone":0,"notes":""}],"meta":{"updatedAt":"21/12/2025 14:06","finalShown":false},"battle":null,"teamXp":0}</script>
+<script type="application/json" id="ZONES">[{"id":"plaine","name":"Plaine de la Compréhension","desc":"Lire, comprendre, repérer l'essentiel.","x":8,"y":15},{"id":"foret","name":"Forêt de l’Écriture","desc":"Écrire, structurer, améliorer.","x":40,"y":44},{"id":"cite","name":"Cité de l’Oral","desc":"Prendre la parole avec confiance.","x":74,"y":14},{"id":"mont","name":"Montagne de la Méthode","desc":"S'organiser, relire, progresser.","x":18,"y":64},{"id":"sanct","name":"Sanctuaire de la Confiance","desc":"Oser, persévérer, grandir.","x":74,"y":64}]</script>
+
+<script>
+"use strict";
+function getJson(id){ try{ return JSON.parse(document.getElementById(id).textContent || "{}"); } catch(e){ return {}; } }
+const meta = getJson("META");
+const stateRaw = getJson("STATE");
+const zones = getJson("ZONES");
+
+if(meta.watermarkOn){ document.body.classList.add("wm"); document.body.dataset.wm = meta.watermark || ""; }
+document.getElementById("pageTitle").textContent = meta.title || "";
+document.getElementById("pageSubtitle").textContent = meta.subtitle || "";
+const upd = document.getElementById("updatedAt");
+if(meta.stampOn){ upd.style.display = "block"; upd.textContent = "Mise à jour du " + (meta.updatedAt || ""); }
+document.getElementById("footerText").textContent = meta.footer || "";
+
+const state = (function(s){
+  const safe = (s && typeof s==="object") ? s : {};
+  safe.zoneId = (typeof safe.zoneId==="string") ? safe.zoneId : (zones[0] ? zones[0].id : "");
+  safe.party = Array.isArray(safe.party) ? safe.party : [];
+  safe.quests = Array.isArray(safe.quests) ? safe.quests : [];
+  safe.boss = (safe.boss && typeof safe.boss==="object") ? safe.boss : null;
+  safe.achievements = Array.isArray(safe.achievements) ? safe.achievements : [];
+  safe.periods = Array.isArray(safe.periods) ? safe.periods : [];
+  return safe;
+})(stateRaw);
+
+function levelFromXP(xp){ xp=Number(xp)||0; if(xp<10)return 1; if(xp<22)return 2; if(xp<38)return 3; if(xp<58)return 4; return 5; }
+function xpToNext(level){ const t=[0,10,22,38,58,999]; return t[level]||999; }
+
+function updatePills(){
+  const zone = zones.find(z=>z.id===state.zoneId);
+  const teamCount = state.party.length;
+  const totalXP = state.party.reduce((a,p)=>a+(Number(p.xp)||0),0);
+  document.getElementById("pillChapter").textContent = "Zone : " + (zone?zone.name:"—");
+  document.getElementById("pillTeam").textContent = "Équipe : " + teamCount + " héros";
+  document.getElementById("pillXP").textContent = "XP total : " + totalXP;
+}
+
+const viewEl = document.getElementById("view");
+const navBtns = Array.from(document.querySelectorAll(".nav button[data-view]"));
+function setView(v){
+  navBtns.forEach(b=>b.classList.toggle("active", b.dataset.view===v));
+  render(v);
+}
+navBtns.forEach(b=>b.addEventListener("click", (e)=>{ e.preventDefault(); setView(b.dataset.view); }));
+
+function render(v){
+  updatePills();
+  if(v==="map") return renderMap();
+  if(v==="roster") return renderRoster();
+  if(v==="quests") return renderQuests();
+  if(v==="progress") return renderProgress();
+}
+
+function renderMap(){
+  viewEl.textContent = "";
+  const zone = zones.find(z=>z.id===state.zoneId);
+
+  const h=document.createElement("h2"); h.style.margin="0 0 8px"; h.style.fontSize="14px"; h.textContent="🗺️ Carte (consultation)"; viewEl.appendChild(h);
+  const p=document.createElement("p"); p.className="muted"; p.textContent="Zone actuelle mise à jour par le professeur."; viewEl.appendChild(p);
+
+  const map=document.createElement("div"); map.className="map";
+  const cam=document.createElement("div"); cam.className="mapCam"; map.appendChild(cam);
+  viewEl.appendChild(map);
+
+  zones.forEach(z=>{
+    const n=document.createElement("div");
+    n.className="node" + (z.id===state.zoneId ? " selected" : "");
+    n.style.left = z.x + "%";
+    n.style.top  = z.y + "%";
+    const t=document.createElement("h3"); t.textContent=z.name; n.appendChild(t);
+    const s=document.createElement("small"); s.textContent=z.desc; n.appendChild(s);
+    const spacer=document.createElement("div"); spacer.style.height="8px"; n.appendChild(spacer);
+    const b=document.createElement("span"); b.className="badge"; b.textContent = (z.id===state.zoneId ? "Vous êtes ici" : "Zone"); n.appendChild(b);
+    cam.appendChild(n);
+  });
+
+  const hr=document.createElement("div"); hr.className="hr"; viewEl.appendChild(hr);
+  const mini=document.createElement("p"); mini.className="mini";
+  mini.textContent = "Zone actuelle : " + (zone?zone.name:"—") + " — " + (zone?zone.desc:"");
+  viewEl.appendChild(mini);
+}
+
+function renderRoster(){
+  viewEl.textContent="";
+  const h=document.createElement("h2"); h.style.margin="0 0 8px"; h.style.fontSize="14px"; h.textContent="👥 Équipe (consultation)"; viewEl.appendChild(h);
+  const p=document.createElement("p"); p.className="muted"; p.textContent="Progression visible. Aucun bouton d’action ici."; viewEl.appendChild(p);
+
+  const list=document.createElement("div"); list.className="list"; viewEl.appendChild(list);
+  if(state.party.length===0){
+    const d=document.createElement("div"); d.className="char";
+    const hh=document.createElement("h3"); hh.style.margin="0"; hh.textContent="Aucune donnée"; d.appendChild(hh);
+    const tg=document.createElement("div"); tg.className="tag"; tg.textContent="Le professeur n’a pas encore publié."; d.appendChild(tg);
+    list.appendChild(d); return;
+  }
+
+  state.party.forEach(pers=>{
+    const xp = Number(pers.xp)||0;
+    const lvl = levelFromXP(xp);
+    const next = xpToNext(lvl+1);
+    const prev = xpToNext(lvl);
+    const span = Math.max(1, next-prev);
+    const prog = Math.min(100, Math.round(((xp-prev)/span)*100));
+
+    const card=document.createElement("div"); card.className="char";
+    const top=document.createElement("div"); top.className="charTop"; card.appendChild(top);
+
+    const left=document.createElement("div");
+    left.style.display="flex"; left.style.gap="10px"; left.style.alignItems="center";
+    top.appendChild(left);
+
+    const av=document.createElement("div"); av.className="avatarBox"; left.appendChild(av);
+    const icon = (pers.icon || "✨");
+    if(pers.portrait){
+      const img=new Image();
+      img.src = pers.portrait;
+      img.alt = pers.name || "";
+      img.onerror = ()=>{ av.textContent = icon; av.classList.add("avatarFallback"); };
+      av.appendChild(img);
+    }else{
+      av.textContent = icon;
+      av.classList.add("avatarFallback");
+    }
+
+    const txt=document.createElement("div"); left.appendChild(txt);
+    const nm=document.createElement("h3"); nm.style.margin="0"; nm.textContent=(pers.name||"—"); txt.appendChild(nm);
+    const tg=document.createElement("div"); tg.className="tag"; tg.textContent=(pers.cls||"—")+" • Qualité : "+(pers.trait||"—"); txt.appendChild(tg);
+
+    const right=document.createElement("div"); right.className="tag"; right.textContent="Niv. "+lvl; top.appendChild(right);
+
+    const bar=document.createElement("div"); bar.className="bar barXp";
+    const fill=document.createElement("div"); fill.style.width = prog + "%";
+    bar.appendChild(fill); card.appendChild(bar);
+
+    const stats=document.createElement("div"); stats.className="stats";
+    stats.innerHTML = "<span>XP : <b>"+xp+"</b></span><span>Prochain niv. : <b>"+(next===999 ? "—" : next)+"</b></span>";
+    card.appendChild(stats);
+
+    if(pers.quest){
+      const q=document.createElement("div"); q.className="mini";
+      const b=document.createElement("b"); b.textContent = pers.quest;
+      q.appendChild(b); card.appendChild(q);
+    }
+    list.appendChild(card);
+  });
+}
+
+function renderQuests(){
+  viewEl.textContent="";
+  const h=document.createElement("h2"); h.style.margin="0 0 8px"; h.style.fontSize="14px"; h.textContent="📜 Quêtes (consultation)"; viewEl.appendChild(h);
+  const p=document.createElement("p"); p.className="muted"; p.textContent="État : à faire / accomplie."; viewEl.appendChild(p);
+
+  if(state.quests.length===0){
+    const d=document.createElement("div"); d.className="char";
+    const hh=document.createElement("h3"); hh.style.margin="0"; hh.textContent="Aucune quête"; d.appendChild(hh);
+    const tg=document.createElement("div"); tg.className="tag"; tg.textContent="Le professeur n’a pas encore publié."; d.appendChild(tg);
+    viewEl.appendChild(d); return;
+  }
+
+  state.quests.forEach(q=>{
+    const card=document.createElement("div"); card.className="char";
+    const top=document.createElement("div"); top.className="charTop"; card.appendChild(top);
+
+    const left=document.createElement("div"); top.appendChild(left);
+    const t=document.createElement("h3"); t.style.margin="0"; t.textContent=(q.title||"Quête"); left.appendChild(t);
+    const d=document.createElement("div"); d.className="tag"; d.textContent=(q.desc||""); left.appendChild(d);
+
+    const r=document.createElement("div"); r.className="tag";
+    r.textContent = "Récompense : " + (Number(q.reward)||0) + " XP";
+    top.appendChild(r);
+
+    const hr=document.createElement("div"); hr.className="hr"; card.appendChild(hr);
+    const st=document.createElement("div"); st.className="tag"; st.textContent = (q.done ? "✅ Accomplie" : "☐ À faire");
+    card.appendChild(st);
+
+    viewEl.appendChild(card);
+  });
+}
+
+function renderProgress(){
+  viewEl.textContent="";
+  const h=document.createElement("h2"); h.style.margin="0 0 8px"; h.style.fontSize="14px"; h.textContent="🏆 Progrès (consultation)"; viewEl.appendChild(h);
+  const p=document.createElement("p"); p.className="muted"; p.textContent="Boss collectif, succès et progression par période."; viewEl.appendChild(p);
+
+  // Boss
+  if(state.boss){
+    const hp = Number(state.boss.hp);
+    const hpMax = Math.max(1, Number(state.boss.hpMax || state.boss.hp));
+    const pct = Math.max(0, Math.min(100, Math.round((hp / hpMax) * 100)));
+
+    const box=document.createElement("div"); box.className="char";
+    const t=document.createElement("h3"); t.style.margin="0 0 6px"; t.textContent = "👹 " + (state.boss.name || "Boss");
+    box.appendChild(t);
+
+    const wrap=document.createElement("div"); wrap.className="hpWrap";
+    const fill=document.createElement("div"); fill.className="hpFill"; fill.style.width = pct + "%";
+    wrap.appendChild(fill); box.appendChild(wrap);
+
+    const lab=document.createElement("div"); lab.className="hpLabel";
+    lab.textContent = "PV : " + (state.boss.hp ?? "—") + " / " + (state.boss.hpMax ?? "—") + " (" + pct + "%)";
+    box.appendChild(lab);
+
+    viewEl.appendChild(box);
+  } else {
+    const d=document.createElement("div"); d.className="char"; d.textContent="Boss : non publié."; viewEl.appendChild(d);
+  }
+
+  const hr1=document.createElement("div"); hr1.className="hr"; viewEl.appendChild(hr1);
+
+  // Succès
+  const ah=document.createElement("h3"); ah.style.margin="0 0 6px"; ah.textContent="🏅 Succès collectifs";
+  viewEl.appendChild(ah);
+
+  if(state.achievements.length===0){
+    const d=document.createElement("div"); d.className="char"; d.textContent="Aucun succès publié."; viewEl.appendChild(d);
+  } else {
+    state.achievements.forEach(a=>{
+      const item=document.createElement("div"); item.className="char";
+      const top=document.createElement("div"); top.className="charTop"; item.appendChild(top);
+
+      const left=document.createElement("div"); top.appendChild(left);
+      const tt=document.createElement("h3"); tt.style.margin="0"; tt.textContent = a.title || "Succès"; left.appendChild(tt);
+      const dd=document.createElement("div"); dd.className="tag"; dd.textContent = a.desc || ""; left.appendChild(dd);
+
+      const badge=document.createElement("div"); badge.className="tag";
+      badge.innerHTML = a.unlocked ? '<span class="pillOk">Débloqué</span>' : '<span class="pillTodo">À débloquer</span>';
+      top.appendChild(badge);
+
+      viewEl.appendChild(item);
+    });
+  }
+
+  const hr2=document.createElement("div"); hr2.className="hr"; viewEl.appendChild(hr2);
+
+  // Périodes
+  const ph=document.createElement("h3"); ph.style.margin="0 0 6px"; ph.textContent="📅 Périodes";
+  viewEl.appendChild(ph);
+
+  if(state.periods.length===0){
+    const d=document.createElement("div"); d.className="char"; d.textContent="Aucune période publiée."; viewEl.appendChild(d);
+  } else {
+    const table=document.createElement("table"); table.className="table";
+    table.innerHTML = "<thead><tr><th>Période</th><th>XP équipe</th><th>Quêtes</th><th>Note</th></tr></thead>";
+    const tb=document.createElement("tbody");
+
+    state.periods.forEach(pr=>{
+      const tr=document.createElement("tr");
+      const td1=document.createElement("td");
+      td1.textContent = String(pr.label || pr.id || "—") + (pr.dateRange ? " (" + pr.dateRange + ")" : "");
+      const td2=document.createElement("td"); td2.textContent = String(pr.teamXp ?? "—");
+      const td3=document.createElement("td"); td3.textContent = String(pr.questsDone ?? "—");
+      const td4=document.createElement("td"); td4.textContent = String(pr.notes ?? "");
+      tr.append(td1, td2, td3, td4);
+      tb.appendChild(tr);
+    });
+
+    table.appendChild(tb);
+    viewEl.appendChild(table);
+  }
+}
+
+setView("map");
+</script>
+</body>
+</html>
