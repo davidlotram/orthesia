@@ -76,5 +76,26 @@
   document.getElementById("help").addEventListener("click", ()=>{ show("Si tu n’as pas le code, demande-le au professeur. (Un code = une classe.)", false); });
   show("➡️ Entre le code et ouvre l’espace de ta classe.", false);
 })();
+<script>
+const btn = document.getElementById("hamburgerBtn");
+const sidebar = document.getElementById("sidebar");
+const overlay = document.getElementById("overlay");
+
+if(btn && sidebar && overlay){
+  btn.onclick = () => {
+    sidebar.classList.toggle("open");
+    overlay.classList.toggle("show");
+  };
+  overlay.onclick = () => {
+    sidebar.classList.remove("open");
+    overlay.classList.remove("show");
+  };
+}
 </script>
+
 </body></html>
+<button class="hamburger" id="hamburgerBtn" aria-label="Ouvrir le menu">
+  <span></span><span></span><span></span>
+</button>
+<div class="overlay" id="overlay"></div>
+
