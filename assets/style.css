@@ -81,4 +81,10 @@ pre{margin:0}
     transform:translateX(0);
   }
 }
+/* ✅ Fix mobile : l’overlay ne doit pas bloquer la saisie quand il est caché */
+.overlay { pointer-events: none; }
+.overlay.show { pointer-events: auto; }
+
+/* ✅ Sécurité : l’input reste cliquable */
+#code { position: relative; z-index: 5; }
 
