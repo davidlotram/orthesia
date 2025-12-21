@@ -8,7 +8,7 @@
 </div></div><div class="pill">📅 Mis à jour : 21/12/2025 12:51</div></div>
 
 <div class="hero">
- <div class="card" id="sidebar">
+ <div class="card">
   <h2>🔐 Entrer le code de ta classe</h2>
     <p>Tu reçois un code (donné par le professeur). Le code ouvre uniquement l’espace de ta classe.</p>
     <input id="code" class="input" placeholder="Ex : PROUST-CLASSE" autocomplete="off"/>
@@ -77,25 +77,36 @@
   show("➡️ Entre le code et ouvre l’espace de ta classe.", false);
 })();
 <script>
-const btn = document.getElementById("hamburgerBtn");
-const sidebar = document.getElementById("sidebar");
-const overlay = document.getElementById("overlay");
+document.addEventListener("DOMContentLoaded", () => {
+  const btn = document.getElementById("hamburgerBtn");
+  const sidebar = document.getElementById("sidebar");
+  const overlay = document.getElementById("overlay");
 
-if(btn && sidebar && overlay){
-  btn.onclick = () => {
+  if(!btn || !sidebar || !overlay) return;
+
+  btn.addEventListener("click", () => {
     sidebar.classList.toggle("open");
     overlay.classList.toggle("show");
-  };
-  overlay.onclick = () => {
+  });
+
+  overlay.addEventListener("click", () => {
     sidebar.classList.remove("open");
     overlay.classList.remove("show");
-  };
-}
+  });
+});
 </script>
 
+  <!-- … ton contenu … -->
+
+  <button class="hamburger" id="hamburgerBtn" aria-label="Ouvrir le menu" type="button">
+    <span></span><span></span><span></span>
+  </button>
+  <div class="overlay" id="overlay"></div>
+
+</body>
+</html>
+ 
+
 </body></html>
-<button class="hamburger" id="hamburgerBtn" aria-label="Ouvrir le menu">
-  <span></span><span></span><span></span>
-</button>
-<div class="overlay" id="overlay"></div>
+
 
