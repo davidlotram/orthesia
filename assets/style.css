@@ -87,4 +87,81 @@ pre{margin:0}
 
 /* ✅ Sécurité : l’input reste cliquable */
 #code { position: relative; z-index: 5; }
+/* =========================
+   ✅ HAMBURGER (SAFE)
+   - Desktop : rien ne bloque les clics
+   - Mobile : menu tiroir + overlay
+   ========================= */
+
+/* Desktop par défaut : PAS d’overlay, PAS de hamburger, sidebar normale */
+.hamburger { display: none !important; }
+.overlay { display: none !important; pointer-events: none !important; }
+
+/* ⚠️ Important : sur desktop, la sidebar ne doit pas être en position fixed */
+#sidebar { position: static; transform: none; }
+
+/* Mobile : tiroir activé */
+@media (max-width: 820px) {
+  .hamburger{
+    display: inline-flex !important;
+    position: fixed;
+    top: 12px;
+    right: 12px;
+    z-index: 9999;
+    width: 46px;
+    height: 46px;
+    border-radius: 14px;
+    border: 1px solid rgba(255,255,255,.16);
+    background: rgba(10,16,30,.55);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    flex-direction: column;
+    cursor: pointer;
+  }
+  .hamburger span{
+    display:block;
+    width: 20px;
+    height: 2px;
+    border-radius: 2px;
+    background: rgba(255,255,255,.9);
+  }
+
+  .overlay{
+    display: block !important;
+    position: fixed;
+    inset: 0;
+    z-index: 9998;
+    background: rgba(0,0,0,.45);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .18s ease;
+  }
+  .overlay.show{
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* Sidebar devient un tiroir */
+  #sidebar{
+    position: fixed !important;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: min(88vw, 360px);
+    z-index: 9999;
+    transform: translateX(-110%);
+    transition: transform .22s ease;
+    overflow: auto;
+  }
+  #sidebar.open{
+    transform: translateX(0);
+  }
+
+  /* Laisse de la place sous le bouton */
+  .container{ padding-top: 70px; }
+}
+
 
