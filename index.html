@@ -4,117 +4,70 @@
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <title>Orthésia — Accès par classe</title>
-<link rel="stylesheet" href="assets/style.css"/>
-  <style>
-/* ✅ HOTFIX: empêche tout blocage de clic sur PC */
-#code { position: relative; z-index: 10; }
-.overlay { display:none; pointer-events:none; }
-.hamburger { display:none; }
 
-/* ✅ Mobile: hamburger + tiroir */
-@media (max-width: 820px){
-  .hamburger{
-    display:inline-flex;
-    position:fixed;
-    top:12px; right:12px;
-    z-index:9999;
-    width:46px;height:46px;
-    border-radius:14px;
-    border:1px solid rgba(255,255,255,.16);
-    background:rgba(10,16,30,.55);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    align-items:center;justify-content:center;
-    gap:5px;flex-direction:column;
-  }
-  .hamburger span{ width:20px;height:2px; background:#fff; display:block; border-radius:2px; }
-
-  .overlay{
-    display:block;
-    position:fixed; inset:0;
-    z-index:9998;
-    background:rgba(0,0,0,.45);
-    opacity:0;
-    pointer-events:none;
-    transition:opacity .18s ease;
-  }
-  .overlay.show{ opacity:1; pointer-events:auto; }
-
-  #sidebar{
-    display:block;
-    position:fixed;
-    top:0; left:0;
-    height:100vh;
-    width:min(88vw, 360px);
-    z-index:9999;
-    background:rgba(10,16,30,.95);
-    border-right:1px solid rgba(255,255,255,.12);
-    transform:translateX(-110%);
-    transition:transform .22s ease;
-    overflow:auto;
-  }
-  #sidebar.open{ transform:translateX(0); }
-
-  .container{ padding-top:70px; }
-}
-</style>
+<!-- ⚠️ cache-bust : change v=1 à v=2 si besoin -->
+<link rel="stylesheet" href="assets/style.css?v=1"/>
 
 </head>
-
 <body>
-  <div style="position:fixed;left:10px;bottom:10px;z-index:99999;background:#ff0;color:#000;padding:8px 10px;border-radius:10px;font-weight:900">
-TEST VERSION NOUVELLE
-</div>
 
-
-<!-- MENU MOBILE -->
-<nav id="sidebar" class="sidebar">
+<!-- MENU MOBILE (tiroir) -->
+<nav id="sidebar" class="sidebar" aria-label="Menu">
   <div class="sidebar-header"><strong>Orthésia</strong></div>
-  <a href="#" class="side-link" onclick="document.getElementById('code').focus()">🔐 Code classe</a>
+  <a href="#" class="side-link" onclick="document.getElementById('code').focus();return false;">🔐 Code classe</a>
   <a href="README.html" class="side-link">📘 Guide</a>
-  <a href="portail_prof.html" class="side-link">🧑‍🏫 Prof</a>
 </nav>
 
-<button class="hamburger" id="hamburgerBtn" aria-label="Ouvrir le menu" type="button">
+<!-- Bouton hamburger -->
+<button class="hamburger" id="hamburgerBtn" type="button" aria-label="Ouvrir le menu">
   <span></span><span></span><span></span>
 </button>
-<div class="overlay" id="overlay"></div>
+
+<!-- Overlay (fond sombre) -->
+<div class="overlay" id="overlay" aria-hidden="true"></div>
 
 <div class="container">
 
-<div class="topbar">
-  <div class="brand">
-    <div class="logo" aria-hidden="true"></div>
-    <div>
-      <h1 class="h1">Orthésia — Accès par classe</h1>
-      <div class="sub">Site de consultation (lecture seule). Chaque classe accède à son espace.</div>
+  <div class="topbar">
+    <div class="brand">
+      <div class="logo" aria-hidden="true"></div>
+      <div>
+        <h1 class="h1">Orthésia — Accès par classe</h1>
+        <div class="sub">Site de consultation (lecture seule). Chaque classe accède à son espace.</div>
+      </div>
+    </div>
+    <div class="pill">📅 Mis à jour : 21/12/2025</div>
+  </div>
+
+  <!-- ✅ garde ton badge TEST si tu veux, sinon enlève-le -->
+  <!-- <div style="position:fixed;left:10px;bottom:10px;z-index:99999;background:#ff0;color:#000;padding:8px 10px;border-radius:10px;font-weight:900">TEST</div> -->
+
+  <div class="hero">
+    <div class="card">
+      <h2>🔐 Entrer le code de ta classe</h2>
+      <p>Le code ouvre uniquement l’espace de ta classe.</p>
+
+      <input id="code" class="input" placeholder="Ex : PROUST-CLASSE" autocomplete="off"/>
+
+      <div class="row" style="margin-top:12px">
+        <button id="go" class="btn btnPrimary" type="button">Ouvrir l’espace</button>
+        <button id="help" class="btn" type="button">Aide</button>
+      </div>
+
+      <div id="msg" class="hint"></div>
+      <div id="warn" class="warn" style="display:none"></div>
     </div>
   </div>
-  <div class="pill">📅 Mis à jour : 21/12/2025</div>
-</div>
-
-<div class="hero">
-  <div class="card">
-    <h2>🔐 Entrer le code de ta classe</h2>
-    <p>Le code ouvre uniquement l’espace de ta classe.</p>
-    <input id="code" class="input" placeholder="Ex : PROUST-CLASSE" autocomplete="off"/>
-    <div style="display:flex; gap:10px; margin-top:12px; flex-wrap:wrap">
-      <button id="go" class="btn btnPrimary" type="button">Ouvrir l’espace</button>
-      <button id="help" class="btn" type="button">Aide</button>
-    </div>
-    <div id="msg" class="hint"></div>
-    <div id="warn" class="warn" style="display:none"></div>
-  </div>
-</div>
 
 </div>
 
-<script src="assets/config.js"></script>
+<!-- ⚠️ cache-bust aussi sur config -->
+<script src="assets/config.js?v=1"></script>
 
 <script>
 (function(){
   const cfg = window.ORTHESIA_CONFIG || {classes:[]};
-  const byCode = new Map(cfg.classes.map(c => [c.code.toLowerCase(), c]));
+  const byCode = new Map((cfg.classes||[]).map(c => [String(c.code||"").toLowerCase(), c]));
   const msg = document.getElementById("msg");
   const warn = document.getElementById("warn");
 
@@ -125,16 +78,17 @@ TEST VERSION NOUVELLE
   }
 
   function go(){
-    const key = document.getElementById("code").value.trim().toLowerCase();
+    const key = (document.getElementById("code").value || "").trim().toLowerCase();
     if(!key) return show("Entre le code de ta classe.", true);
     const c = byCode.get(key);
     if(!c) return show("Code non reconnu.", true);
-    window.location.href = "classes/" + c.slug + "/index.html";
+    // ✅ relatif fiable sur GitHub Pages
+    window.location.href = "classes/" + encodeURIComponent(c.slug) + "/index.html";
   }
 
-  document.getElementById("go").onclick = go;
-  document.getElementById("code").onkeydown = e => e.key==="Enter" && go();
-  document.getElementById("help").onclick = () => show("Demande le code au professeur.", false);
+  document.getElementById("go").addEventListener("click", go);
+  document.getElementById("code").addEventListener("keydown", e => { if(e.key==="Enter") go(); });
+  document.getElementById("help").addEventListener("click", () => show("Demande le code au professeur.", false));
 })();
 </script>
 
@@ -143,18 +97,18 @@ document.addEventListener("DOMContentLoaded", () => {
   const btn = document.getElementById("hamburgerBtn");
   const sidebar = document.getElementById("sidebar");
   const overlay = document.getElementById("overlay");
+  if(!btn || !sidebar || !overlay) return;
 
-  btn.onclick = () => {
+  btn.addEventListener("click", () => {
     sidebar.classList.toggle("open");
     overlay.classList.toggle("show");
-  };
-  overlay.onclick = () => {
+  });
+  overlay.addEventListener("click", () => {
     sidebar.classList.remove("open");
     overlay.classList.remove("show");
-  };
+  });
 });
 </script>
 
 </body>
 </html>
-
