@@ -151,3 +151,10 @@ a{color:inherit}
 
   .container{padding-top:70px;}
 }
+/* TEST: forcer l'affichage du hamburger sur mobile */
+@media (max-width: 820px){
+  #hamburgerBtn{ 
+    display: inline-flex !important;
+    outline: 3px solid yellow !important; /* juste pour le voir */
+  }
+}
