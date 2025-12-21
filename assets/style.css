@@ -163,5 +163,84 @@ pre{margin:0}
   /* Laisse de la place sous le bouton */
   .container{ padding-top: 70px; }
 }
+/* =========================
+   ✅ FIX HAMBURGER + INPUT
+   - Desktop : rien ne bloque la saisie
+   - Mobile : menu tiroir + overlay
+   ========================= */
+
+/* Desktop (par défaut) : pas de hamburger, pas d'overlay */
+.hamburger { display: none !important; }
+.overlay { display: none !important; pointer-events: none !important; }
+
+/* IMPORTANT : sur desktop, la sidebar doit rester normale */
+#sidebar { position: static !important; transform: none !important; height: auto !important; }
+
+/* Mobile : activation du tiroir */
+@media (max-width: 820px) {
+
+  /* bouton hamburger visible */
+  .hamburger{
+    display: inline-flex !important;
+    position: fixed;
+    top: 12px;
+    right: 12px;
+    z-index: 9999;
+    width: 46px;
+    height: 46px;
+    border-radius: 14px;
+    border: 1px solid rgba(255,255,255,.16);
+    background: rgba(10,16,30,.55);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    flex-direction: column;
+    cursor: pointer;
+  }
+  .hamburger span{
+    display:block;
+    width: 20px;
+    height: 2px;
+    border-radius: 2px;
+    background: rgba(255,255,255,.9);
+  }
+
+  /* overlay n'existe QUE sur mobile */
+  .overlay{
+    display: block !important;
+    position: fixed;
+    inset: 0;
+    z-index: 9998;
+    background: rgba(0,0,0,.45);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .18s ease;
+  }
+  .overlay.show{
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* sidebar => tiroir */
+  #sidebar{
+    position: fixed !important;
+    top: 0;
+    left: 0;
+    height: 100vh !important;
+    width: min(88vw, 360px);
+    z-index: 9999;
+    transform: translateX(-110%);
+    transition: transform .22s ease;
+    overflow: auto;
+  }
+  #sidebar.open{
+    transform: translateX(0);
+  }
+
+  /* laisser de la place sous le bouton */
+  .container{ padding-top: 70px; }
+}
 
 
