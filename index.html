@@ -66,31 +66,32 @@
 
 <script>
 (function(){
-  const cfg = window.ORTHESIA_CONFIG || {classes:[]};
-  const byCode = new Map((cfg.classes||[]).map(c => [String(c.code||"").toLowerCase(), c]));
-  const msg = document.getElementById("msg");
-  const warn = document.getElementById("warn");
+  const cfg = window.ORTHESIA_CONFIG || { classes: [] };
+  const byCode = new Map(cfg.classes.map(c => [String(c.code).trim().toLowerCase(), c]));
+
+  const codeEl = document.getElementById("code");
+  const warnEl = document.getElementById("warn");
+  const msgEl  = document.getElementById("msg");
 
   function show(text, bad){
-    warn.style.display = bad ? "block" : "none";
-    warn.textContent = bad ? text : "";
-    msg.textContent = bad ? "" : text;
+    if(bad){ warnEl.style.display="block"; warnEl.textContent=text; msgEl.textContent=""; }
+    else { warnEl.style.display="none"; warnEl.textContent=""; msgEl.textContent=text || ""; }
   }
 
   function go(){
-    const key = (document.getElementById("code").value || "").trim().toLowerCase();
-    if(!key) return show("Entre le code de ta classe.", true);
-    const c = byCode.get(key);
-    if(!c) return show("Code non reconnu.", true);
-    // ✅ relatif fiable sur GitHub Pages
-    window.location.href = "eleve.html?c=" + encodeURIComponent(c.slug);
-
+    const raw = (codeEl.value || "").trim().toLowerCase();
+    if(!raw){ show("Entre le code de la classe.", true); return; }
+    const c = byCode.get(raw);
+    if(!c){ show("Code non reconnu. Vérifie majuscules / tirets.", true); return; }
+    sessionStorage.setItem("orthesia_class", c.slug);
+    window.location.href = "classes/" + c.slug + "/index.html";
   }
 
   document.getElementById("go").addEventListener("click", go);
-  document.getElementById("code").addEventListener("keydown", e => { if(e.key==="Enter") go(); });
-  document.getElementById("help").addEventListener("click", () => show("Demande le code au professeur.", false));
+  codeEl.addEventListener("keydown", (e)=>{ if(e.key==="Enter") go(); });
 })();
+
+
 </script>
 
 <script>
