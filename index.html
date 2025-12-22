@@ -83,7 +83,8 @@
     const c = byCode.get(key);
     if(!c) return show("Code non reconnu.", true);
     // ✅ relatif fiable sur GitHub Pages
-    window.location.href = "classes/" + encodeURIComponent(c.slug) + "/index.html";
+    window.location.href = "eleve.html?c=" + encodeURIComponent(c.slug);
+
   }
 
   document.getElementById("go").addEventListener("click", go);
