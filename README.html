@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Orthésia — Guide</title>
+  <link rel="stylesheet" href="assets/style.css"/>
+</head>
+<body>
+  <div class="container">
+    <header class="topbar">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <div style="min-width:0">
+          <h1>Guide — Orthésia (site de consultation)</h1>
+          <div class="sub">Structure simple, stable, compatible téléphone.</div>
+        </div>
+      </div>
+      <div class="pills">
+        <a class="pill" href="index.html">🏠 Accueil</a>
+        <a class="pill" href="portail_prof.html">🧑‍🏫 Portail prof</a>
+      </div>
+    </header>
+
+    <div class="grid">
+      <section class="card">
+        <h2>📁 Arborescence attendue</h2>
+        <div class="muted2"><pre style="white-space:pre-wrap;margin:0">orthesia/
+├─ index.html
+├─ portail_prof.html
+├─ README.html
+├─ assets/
+│  ├─ style.css
+│  └─ prof.js
+└─ classes/
+   ├─ 5e-proust/
+   │  ├─ orthesia_5e_proust_view.html
+   │  ├─ (portraits .png…)
+   ├─ 5e-sarraute/
+   │  ├─ orthesia_5e_sarraute_view.html
+   │  ├─ (portraits .png…)
+   └─ 4e/
+      ├─ orthesia_4e_view.html
+      ├─ (portraits .png…)</pre></div>
+
+        <div class="hr"></div>
+        <h2>🔗 Liens à mettre dans Pronote</h2>
+        <div class="muted2">
+          Donne <b>le lien direct de la classe</b> (fichier view). Exemple :<br/>
+          <span class="kbd">https://davidlotram.github.io/orthesia/classes/5e-proust/orthesia_5e_proust_view.html</span>
+        </div>
+      </section>
+
+      <aside class="card">
+        <h2>🛟 Dépannage express</h2>
+        <div class="muted2">
+          <b>Page blanche</b> → fichier view pas dans le bon dossier, ou images manquantes.<br/><br/>
+          <b>404</b> → nom de dossier/fichier différent (attention aux tirets, majuscules).<br/><br/>
+          <b>Photos</b> → garder les .png dans le même dossier que le view, exactement comme les noms attendus.
+        </div>
+      </aside>
+    </div>
+
+    <div class="footer">Mis à jour : 22/12/2025 12:01</div>
+  </div>
+</body>
+</html>

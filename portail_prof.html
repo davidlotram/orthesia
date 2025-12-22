@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Orthésia — Portail prof</title>
+  <link rel="stylesheet" href="assets/style.css"/>
+</head>
+<body>
+  <div class="container">
+    <header class="topbar">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <div style="min-width:0">
+          <h1>Orthésia — Portail prof</h1>
+          <div class="sub">Récapitulatif des liens à diffuser + accès rapide.</div>
+        </div>
+      </div>
+      <div class="pills">
+        <a class="pill" href="index.html">🏠 Accueil</a>
+        <div class="pill">🗓️ Mis à jour : 22/12/2025 12:01</div>
+      </div>
+    </header>
+
+    <div class="grid">
+      <section class="card">
+        <h2>🔗 Liens à donner aux élèves (Pronote)</h2>
+        <div class="muted">Copie/colle ces liens dans le cahier de texte Pronote. Les élèves consultent, sans modifier.</div>
+        <div class="hr"></div>
+
+        <table class="table">
+          <thead>
+            <tr><th>Classe</th><th>Lien complet</th><th>Actions</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><b>5e Proust</b></td>
+              <td><span class="kbd">https://davidlotram.github.io/orthesia/classes/5e-proust/orthesia_5e_proust_view.html</span></td>
+              <td>
+                <button class="btn btnPrimary" data-copy="https://davidlotram.github.io/orthesia/classes/5e-proust/orthesia_5e_proust_view.html">Copier</button>
+                <a class="btn" href="classes/5e-proust/orthesia_5e_proust_view.html">Tester</a>
+              </td>
+            </tr>
+            <tr>
+              <td><b>5e Sarraute</b></td>
+              <td><span class="kbd">https://davidlotram.github.io/orthesia/classes/5e-sarraute/orthesia_5e_sarraute_view.html</span></td>
+              <td>
+                <button class="btn btnPrimary" data-copy="https://davidlotram.github.io/orthesia/classes/5e-sarraute/orthesia_5e_sarraute_view.html">Copier</button>
+                <a class="btn" href="classes/5e-sarraute/orthesia_5e_sarraute_view.html">Tester</a>
+              </td>
+            </tr>
+            <tr>
+              <td><b>4e</b></td>
+              <td><span class="kbd">https://davidlotram.github.io/orthesia/classes/4e/orthesia_4e_view.html</span></td>
+              <td>
+                <button class="btn btnPrimary" data-copy="https://davidlotram.github.io/orthesia/classes/4e/orthesia_4e_view.html">Copier</button>
+                <a class="btn" href="classes/4e/orthesia_4e_view.html">Tester</a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="hr"></div>
+
+        <h2 style="margin-top:0">🧭 Liens rapides</h2>
+        <div class="btnRow">
+          <a class="btn" href="README.html">📘 Guide</a>
+          <a class="btn" href="classes/5e-proust/">📁 Dossier 5e Proust</a>
+          <a class="btn" href="classes/5e-sarraute/">📁 Dossier 5e Sarraute</a>
+          <a class="btn" href="classes/4e/">📁 Dossier 4e</a>
+        </div>
+
+        <div class="hr"></div>
+        <div class="muted2">
+          <b>Rappel sécurité :</b> sur GitHub Pages, les visiteurs ne peuvent pas “modifier” le site.
+          Ils peuvent seulement lire les fichiers publics que tu as publiés dans ce dépôt.
+        </div>
+      </section>
+
+      <aside class="card">
+        <h2>✅ Checklist rapide</h2>
+        <div class="muted2">
+          • Chaque classe = un dossier dans <span class="kbd">classes/</span><br/>
+          • Dans le dossier : le fichier <span class="kbd">..._view.html</span> + les portraits <span class="kbd">.png</span><br/>
+          • Les liens Pronote pointent vers <b>..._view.html</b> (pas vers le dossier).<br/>
+          • Si photo manquante : l’icône par défaut s’affiche (normal).<br/>
+        </div>
+      </aside>
+    </div>
+
+    <div id="toast" class="toast">Lien copié ✅</div>
+    <script src="assets/prof.js"></script>
+  </div>
+</body>
+</html>

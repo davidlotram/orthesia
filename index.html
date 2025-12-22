@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Orthésia — Accès par classe</title>
+  <link rel="stylesheet" href="assets/style.css"/>
+</head>
+<body>
+  <div class="container">
+    <header class="topbar">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <div style="min-width:0">
+          <h1>Orthésia — Accès par classe</h1>
+          <div class="sub">Site de consultation (lecture seule). Chaque classe ouvre son espace.</div>
+        </div>
+      </div>
+      <div class="pills">
+        <div class="pill">🗓️ Mis à jour : 22/12/2025 12:01</div>
+        <a class="pill" href="README.html">📘 Guide</a>
+        <a class="pill" href="portail_prof.html">🧑‍🏫 Portail prof</a>
+      </div>
+    </header>
+
+    <div class="grid">
+      <section class="card">
+        <h2>📌 Choisis ta classe</h2>
+        <div class="muted">Ces liens sont en <b>lecture seule</b>. Les élèves peuvent consulter les avancées, sans rien modifier.</div>
+        <div class="hr"></div>
+
+        <table class="table" aria-label="Liens par classe">
+          <thead>
+            <tr><th>Classe</th><th>Lien</th><th>Action</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><b>5e Proust</b><div class="muted2">Carte • Équipe • Quêtes • Progrès • Boss • Succès</div></td>
+              <td><span class="kbd">/classes/5e-proust/orthesia_5e_proust_view.html</span></td>
+              <td><a class="btn btnPrimary" href="classes/5e-proust/orthesia_5e_proust_view.html">Ouvrir</a></td>
+            </tr>
+            <tr>
+              <td><b>5e Sarraute</b><div class="muted2">Carte • Équipe • Quêtes • Progrès • Boss • Succès</div></td>
+              <td><span class="kbd">/classes/5e-sarraute/orthesia_5e_sarraute_view.html</span></td>
+              <td><a class="btn btnPrimary" href="classes/5e-sarraute/orthesia_5e_sarraute_view.html">Ouvrir</a></td>
+            </tr>
+            <tr>
+              <td><b>4e</b><div class="muted2">Carte • Équipe • Quêtes • Progrès • Boss • Succès</div></td>
+              <td><span class="kbd">/classes/4e/orthesia_4e_view.html</span></td>
+              <td><a class="btn btnPrimary" href="classes/4e/orthesia_4e_view.html">Ouvrir</a></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="hr"></div>
+        <div class="muted2">
+          ✅ Astuce Pronote : colle directement le lien de la classe (ci-dessus).<br/>
+          🔒 Les élèves ne peuvent pas modifier le site : GitHub Pages est en lecture seule.
+        </div>
+      </section>
+
+      <aside class="card">
+        <h2>🧑‍🏫 Pour toi (prof)</h2>
+        <div class="muted">Le portail prof récapitule tous les liens + boutons “Copier”.</div>
+        <div class="btnRow">
+          <a class="btn btnGood" href="portail_prof.html">Ouvrir le portail prof</a>
+          <a class="btn" href="README.html">Guide d’installation</a>
+        </div>
+        <div class="hr"></div>
+        <div class="muted2">
+          <b>Important :</b> si une page de classe est blanche, vérifie que le fichier <span class="kbd">.html</span> et les <span class="kbd">.png</span>
+          sont bien dans le <b>même dossier</b> de la classe.
+        </div>
+      </aside>
+    </div>
+
+    <div class="footer">Orthésia — consultation par classe • lecture seule</div>
+  </div>
+</body>
+</html>
