@@ -20,3 +20,10 @@ window.ORTHESIA_CONFIG = {
     }
   ]
 };
+window.ORTHESIA_CONFIG = {
+  classes: [
+    { code: "4E",          slug: "4e",          label: "4e" },
+    { code: "5E-PROUST",   slug: "5e-proust",   label: "5e Proust" },
+    { code: "5E-SARRAUTE", slug: "5e-sarraute", label: "5e Sarraute" }
+  ]
+};
