@@ -365,32 +365,6 @@ function escapeHtml(str){
 }
 
 console.log("JS chargé (version corrigée)");
-<script>
-/* 🔐 Accès prof (clé dans l’URL) */
-(function(){
-  const PROF_KEY = "prof2025"; // ✅ change ici
-
-  const urlKey = new URLSearchParams(location.search).get("key");
-  if (urlKey !== PROF_KEY) {
-    document.documentElement.innerHTML = `
-      <head><meta charset="utf-8"><title>Accès réservé</title></head>
-      <body style="background:#0b1020;color:#fff;font-family:system-ui;display:flex;align-items:center;justify-content:center;min-height:100vh;margin:0">
-        <div style="max-width:620px;padding:22px;border:1px solid rgba(255,255,255,.15);border-radius:14px;background:rgba(0,0,0,.25)">
-          <h2 style="margin:0 0 10px 0">Accès prof</h2>
-          <p style="margin:0 0 12px 0">Clé manquante ou incorrecte.</p>
-          <p style="margin:0;opacity:.8">Astuce : ajoute <b>?key=${PROF_KEY}</b> à l’URL.</p>
-        </div>
-      </body>`;
-    throw new Error("Accès prof refusé");
-  }
-})();
-</script>
-
-
-
-
-
-
 
 // ---------- Données élèves ----------
 const students = [
@@ -1712,6 +1686,54 @@ save();
     </div>
   </div>
 </div>
+<script>
+(function () {
+
+  const PROF_KEY = "prof2025"; // ← change si tu veux
+
+  function hasAccess() {
+    const urlKey = new URLSearchParams(window.location.search).get("key");
+    const savedKey = localStorage.getItem("prof_key");
+    return urlKey === PROF_KEY || savedKey === PROF_KEY;
+  }
+
+  function askPassword() {
+    const k = prompt("Accès professeur – entre la clé :");
+    if (k === PROF_KEY) {
+      localStorage.setItem("prof_key", k);
+      location.reload();
+    } else {
+      alert("Clé incorrecte.");
+    }
+  }
+
+  function lockPage() {
+    document.body.innerHTML = `
+      <div style="
+        max-width:480px;
+        margin:100px auto;
+        padding:30px;
+        background:#111;
+        color:white;
+        text-align:center;
+        border-radius:12px;
+        font-family:system-ui">
+        <h2>🔒 Accès réservé</h2>
+        <p>Cette page est réservée à l’enseignant.</p>
+        <button onclick="(${askPassword.toString()})()" 
+          style="margin-top:15px;padding:10px 20px;border-radius:8px;border:none;background:#4da3ff;color:#000;font-weight:bold;">
+          Accès prof
+        </button>
+      </div>
+    `;
+  }
+
+  if (!hasAccess()) {
+    lockPage();
+  }
+
+})();
+</script>
 
 </body>
 </html>
