@@ -368,6 +368,24 @@ function escapeHtml(str){
 
 console.log("✅ JS chargé (version corrigée)");
 
+  <script>
+(() => {
+  const PROF_KEY = "TONCODESECRET"; // <-- à changer (unique)
+  const urlKey = new URLSearchParams(location.search).get("key");
+
+  if (urlKey !== PROF_KEY) {
+    document.body.innerHTML = `
+      <div style="max-width:520px;margin:60px auto;padding:18px;border-radius:14px;background:#0f1730;color:#fff;font-family:system-ui;">
+        <h2>Accès prof</h2>
+        <p>Accès refusé (clé manquante ou incorrecte).</p>
+        <p style="opacity:.8">Astuce : utilise l’URL avec <b>?key=...</b></p>
+      </div>`;
+    return;
+  }
+})();
+</script>
+
+
 // ---------- Données élèves ----------
 const students = [
   { id:"s01", name: "Aelig", cls: "Éclaireur", trait: "courage", keywords: ["participation","confiance","oral"], quest: "Participer au moins 1 fois en cours (même une phrase).", xp: 0, hp: 30, hpMax: 30, portrait: "aelig.png", icon:"✨" },
