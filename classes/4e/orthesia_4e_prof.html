@@ -366,6 +366,125 @@ function escapeHtml(str){
 
 console.log("JS chargé (version corrigée)");
 
+  <script>
+(() => {
+  // ====== CONFIG ======
+  const PROF_KEY = "prof2025"; // <-- mets ta clé unique ici
+
+  // ====== Helpers ======
+  function qs(sel, root = document) { return root.querySelector(sel); }
+
+  function removeGate() {
+    const gate = document.getElementById("profGate");
+    if (gate) gate.remove();
+    document.body.classList.remove("gate-locked");
+  }
+
+  function grantAccess() {
+    sessionStorage.setItem("orthesia_prof_ok", "1");
+    removeGate();
+  }
+
+  function denyAccess() {
+    // petit feedback
+    alert("Clé incorrecte.");
+  }
+
+  function promptKey() {
+    const k = prompt("Clé d’accès prof :");
+    if (!k) return;
+    if (k === PROF_KEY) {
+      grantAccess();
+    } else {
+      denyAccess();
+    }
+  }
+
+  function showGate() {
+    // CSS minimal safe (cliquable + au-dessus)
+    if (!document.getElementById("profGateStyle")) {
+      const st = document.createElement("style");
+      st.id = "profGateStyle";
+      st.textContent = `
+        body.gate-locked { overflow:hidden; }
+        #profGate{
+          position:fixed; inset:0; z-index:999999;
+          display:flex; align-items:center; justify-content:center;
+          background:rgba(0,0,0,.6);
+          pointer-events:auto;
+        }
+        #profGate .card{
+          width:min(520px,92vw);
+          background:rgba(10,16,32,.95);
+          border:1px solid rgba(255,255,255,.12);
+          border-radius:18px;
+          padding:22px;
+          box-shadow:0 20px 70px rgba(0,0,0,.45);
+          color:#fff;
+          text-align:center;
+        }
+        #profGate .btn{
+          margin-top:14px;
+          padding:10px 16px;
+          border-radius:12px;
+          border:1px solid rgba(255,255,255,.18);
+          background:#3b82f6;
+          color:#fff;
+          font-weight:700;
+          cursor:pointer;
+          pointer-events:auto;
+        }
+        #profGate .hint{ opacity:.75; margin-top:10px; font-size:13px; }
+      `;
+      document.head.appendChild(st);
+    }
+
+    // HTML overlay
+    const gate = document.createElement("div");
+    gate.id = "profGate";
+    gate.innerHTML = `
+      <div class="card">
+        <div style="font-size:34px;margin-bottom:10px">🔒</div>
+        <div style="font-size:28px;font-weight:800;margin-bottom:10px">Accès réservé</div>
+        <div style="opacity:.9">Cette page est réservée à l’enseignant.</div>
+        <button class="btn" id="profGateBtn">Accès prof</button>
+        <div class="hint">Astuce : tu peux aussi utiliser l’URL avec <b>?key=...</b></div>
+      </div>
+    `;
+    document.body.classList.add("gate-locked");
+    document.body.appendChild(gate);
+
+    // Click handler (IMPORTANT : on le branche après insertion)
+    qs("#profGateBtn", gate).addEventListener("click", promptKey);
+  }
+
+  // ====== Logique d’accès ======
+  const urlKey = new URLSearchParams(location.search).get("key");
+
+  // 1) Si clé dans l’URL => déverrouille + retire la clé de l’URL
+  if (urlKey && urlKey === PROF_KEY) {
+    sessionStorage.setItem("orthesia_prof_ok", "1");
+    // enlève ?key=... de l’URL pour éviter de partager la clé sans faire exprès
+    history.replaceState({}, "", location.pathname);
+  }
+
+  // 2) Si déjà OK dans cette session => laisse passer
+  if (sessionStorage.getItem("orthesia_prof_ok") === "1") {
+    removeGate();
+    return;
+  }
+
+  // 3) Sinon => affiche l’overlay
+  // (on attend que le body existe)
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", showGate);
+  } else {
+    showGate();
+  }
+})();
+</script>
+
+
 // ---------- Données élèves ----------
 const students = [
   { id:"s01", name: "Aelig", cls: "Éclaireur", trait: "courage", keywords: ["participation","confiance","oral"], quest: "Participer au moins 1 fois en cours (même une phrase).", xp: 0, hp: 30, hpMax: 30, portrait: "aelig.png", icon:"✨" },
@@ -1719,75 +1838,7 @@ save();
   .profGateIcon{ font-size:34px; margin-bottom:8px; }
   .profGateHint{ opacity:.75; margin-top:12px; font-size:13px; }
 </style>
-<script>
-(() => {
-  const PROF_KEY = "prof2025"; // <-- ta clé unique
 
-  const urlKey = new URLSearchParams(location.search).get("key");
-  const unlocked = sessionStorage.getItem("ORTHESIA_PROF_UNLOCKED") === "1";
-
-  // ✅ si clé OK dans l'URL, on déverrouille et on continue
-  if (urlKey === PROF_KEY) {
-    sessionStorage.setItem("ORTHESIA_PROF_UNLOCKED", "1");
-    return;
-  }
-
-  // ✅ si déjà déverrouillé dans cette session, on continue
-  if (unlocked) return;
-
-  // 🚫 sinon on bloque avec un overlay cliquable
-  const overlay = document.createElement("div");
-  overlay.id = "profGate";
-  overlay.style.cssText = `
-    position:fixed; inset:0; z-index:99999;
-    background:rgba(0,0,0,.55);
-    display:flex; align-items:center; justify-content:center;
-    padding:16px;
-  `;
-
-  overlay.innerHTML = `
-    <div style="
-      width:min(520px,100%);
-      background:#0b1020;
-      border:1px solid rgba(255,255,255,.12);
-      border-radius:16px;
-      padding:22px;
-      color:#fff;
-      text-align:center;
-      box-shadow:0 18px 60px rgba(0,0,0,.55);
-      font-family:system-ui,Segoe UI,Roboto,Arial,sans-serif;">
-      <div style="font-size:42px; margin-bottom:10px;">🔒</div>
-      <h2 style="margin:0 0 8px;">Accès réservé</h2>
-      <p style="opacity:.85; margin:0 0 16px;">Cette page est réservée à l’enseignant.</p>
-      <button id="btnProfGate" style="
-        padding:10px 18px;
-        border-radius:12px;
-        border:1px solid rgba(255,255,255,.18);
-        background:#2f7efb;
-        color:#fff;
-        cursor:pointer;
-        font-size:16px;
-      ">Accès prof</button>
-      <p style="opacity:.7; margin:14px 0 0; font-size:13px;">
-        Astuce : tu peux aussi utiliser l’URL avec <b>?key=...</b>
-      </p>
-    </div>
-  `;
-
-  document.body.appendChild(overlay);
-
-  document.getElementById("btnProfGate").onclick = () => {
-    const k = prompt("Clé prof :");
-    if (k === null) return;
-    if (String(k).trim() === PROF_KEY) {
-      sessionStorage.setItem("ORTHESIA_PROF_UNLOCKED", "1");
-      overlay.remove(); // ✅ enlève l’overlay, donc tout redevient cliquable
-    } else {
-      alert("Clé incorrecte.");
-    }
-  };
-})();
-</script>
 
 
   
