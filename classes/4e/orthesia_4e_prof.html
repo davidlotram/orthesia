@@ -17,7 +17,35 @@
     --line:rgba(255,255,255,.12);
   }
   *{box-sizing:border-box}
-body{
+body
+<script>
+(function () {
+  const PASSWORD = "prof2024"; // 🔐 à changer
+  const KEY = "orthesia_prof_access";
+
+  function askPassword() {
+    let pass = prompt("🔒 Accès réservé – Mot de passe :");
+    if (pass === PASSWORD) {
+      localStorage.setItem(KEY, "ok");
+      return true;
+    } else {
+      alert("Mot de passe incorrect.");
+      return false;
+    }
+  }
+
+  // Vérification à l'ouverture
+  if (localStorage.getItem(KEY) !== "ok") {
+    if (!askPassword()) {
+      document.body.innerHTML = "<h2 style='text-align:center;margin-top:20vh;'>Accès refusé</h2>";
+      throw new Error("Accès refusé");
+    }
+  }
+})();
+</script>
+
+  
+  {
     margin:0;
     font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
     background: radial-gradient(1200px 700px at 20% 10%, #18214a 0%, var(--bg) 55%),
