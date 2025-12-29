@@ -1686,54 +1686,75 @@ save();
     </div>
   </div>
 </div>
+
+<!-- === GATE PROF (UI + clé URL) === -->
+<div id="profGate" class="profGate" hidden>
+  <div class="profGateCard">
+    <div class="profGateIcon">🔒</div>
+    <h2>Accès réservé</h2>
+    <p>Cette page est réservée à l’enseignant.</p>
+    <button id="btnProfAccess" class="btn primary" type="button">Accès prof</button>
+    <p class="profGateHint">Astuce : tu peux aussi utiliser l’URL avec <b>?key=…</b></p>
+  </div>
+</div>
+
+<style>
+  /* Gate toujours au-dessus + cliquable */
+  .profGate{
+    position:fixed; inset:0;
+    display:flex; align-items:center; justify-content:center;
+    background:rgba(0,0,0,.75);
+    z-index:999999;           /* très haut */
+    pointer-events:auto;      /* capte les clics */
+  }
+  .profGateCard{
+    width:min(520px, 92vw);
+    background:#0f1526;
+    border:1px solid rgba(255,255,255,.12);
+    border-radius:16px;
+    padding:22px;
+    text-align:center;
+    box-shadow:0 20px 60px rgba(0,0,0,.55);
+  }
+  .profGateIcon{ font-size:34px; margin-bottom:8px; }
+  .profGateHint{ opacity:.75; margin-top:12px; font-size:13px; }
+</style>
+
 <script>
-(function () {
+(function(){
+  // ✅ TA CLÉ UNIQUE ICI
+  const PROF_KEY = "prof2025";
 
-  const PROF_KEY = "prof2025"; // ← change si tu veux
+  // récupère ?key=...
+  const url = new URL(location.href);
+  const urlKey = url.searchParams.get("key");
 
-  function hasAccess() {
-    const urlKey = new URLSearchParams(window.location.search).get("key");
-    const savedKey = localStorage.getItem("prof_key");
-    return urlKey === PROF_KEY || savedKey === PROF_KEY;
+  // si pas la bonne clé -> on affiche le gate
+  if(urlKey !== PROF_KEY){
+    const gate = document.getElementById("profGate");
+    gate.hidden = false;
+
+    // empêche tout ce qui est derrière de recevoir des clics
+    document.documentElement.style.pointerEvents = "none";
+    gate.style.pointerEvents = "auto"; // sauf le gate
+
+    const btn = document.getElementById("btnProfAccess");
+    btn.addEventListener("click", (e)=>{
+      e.preventDefault();
+      e.stopPropagation();
+
+      const k = prompt("Clé d’accès prof :");
+      if(!k) return;
+
+      // remet/ajoute ?key=...
+      url.searchParams.set("key", k.trim());
+      location.href = url.toString();
+    });
   }
-
-  function askPassword() {
-    const k = prompt("Accès professeur – entre la clé :");
-    if (k === PROF_KEY) {
-      localStorage.setItem("prof_key", k);
-      location.reload();
-    } else {
-      alert("Clé incorrecte.");
-    }
-  }
-
-  function lockPage() {
-    document.body.innerHTML = `
-      <div style="
-        max-width:480px;
-        margin:100px auto;
-        padding:30px;
-        background:#111;
-        color:white;
-        text-align:center;
-        border-radius:12px;
-        font-family:system-ui">
-        <h2>🔒 Accès réservé</h2>
-        <p>Cette page est réservée à l’enseignant.</p>
-        <button onclick="(${askPassword.toString()})()" 
-          style="margin-top:15px;padding:10px 20px;border-radius:8px;border:none;background:#4da3ff;color:#000;font-weight:bold;">
-          Accès prof
-        </button>
-      </div>
-    `;
-  }
-
-  if (!hasAccess()) {
-    lockPage();
-  }
-
 })();
 </script>
+
+  
 
 </body>
 </html>
