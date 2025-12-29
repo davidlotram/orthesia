@@ -19,31 +19,32 @@
   *{box-sizing:border-box}
 body
 <script>
-(function () {
-  const PASSWORD = "prof2024"; // 🔐 à changer
-  const KEY = "orthesia_prof_access";
+/* ===== Accès prof (barrière simple) ===== */
+const PROF_PASSWORD = "prof2025";
+const PROF_KEY = "orthesia_prof_auth_v1";
 
-  function askPassword() {
-    let pass = prompt("🔒 Accès réservé – Mot de passe :");
-    if (pass === PASSWORD) {
-      localStorage.setItem(KEY, "ok");
-      return true;
-    } else {
-      alert("Mot de passe incorrect.");
-      return false;
-    }
-  }
+function requireProfAccess(){
+  // déjà validé ?
+  if (localStorage.getItem(PROF_KEY) === "ok") return true;
 
-  // Vérification à l'ouverture
-  if (localStorage.getItem(KEY) !== "ok") {
-    if (!askPassword()) {
-      document.body.innerHTML = "<h2 style='text-align:center;margin-top:20vh;'>Accès refusé</h2>";
-      throw new Error("Accès refusé");
-    }
+  const attempt = prompt("🔒 Accès prof — mot de passe :");
+  if (attempt === PROF_PASSWORD) {
+    localStorage.setItem(PROF_KEY, "ok");
+    return true;
   }
-})();
+  alert("Mot de passe incorrect.");
+  // bloque l’interface
+  document.body.innerHTML = "<div style='padding:20px;font-family:system-ui;color:#fff;background:#0b1020'>Accès refusé.</div>";
+  throw new Error("Accès prof refusé");
+}
+
+// appelle ça avant le reste
+requireProfAccess();
 </script>
 
+<button class="btn danger" onclick="localStorage.removeItem('orthesia_prof_auth_v1'); location.reload();">
+  Se déconnecter
+</button>
   
   {
     margin:0;
