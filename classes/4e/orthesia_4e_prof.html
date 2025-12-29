@@ -353,10 +353,9 @@ body{
     </div>
   </div>
 </div>
-
 <script>
 function escapeHtml(str){
-  if(typeof str!=="string") return "";
+  if(typeof str !== "string") return "";
   return str
     .replace(/&/g,"&amp;")
     .replace(/</g,"&lt;")
@@ -365,25 +364,29 @@ function escapeHtml(str){
     .replace(/'/g,"&#039;");
 }
 
+console.log("JS chargé (version corrigée)");
+</script>
 
-console.log("✅ JS chargé (version corrigée)");
-
-  <script>
-(() => {
-  const PROF_KEY = "prof2025"; // <-- à changer (unique)
+<script>
+(function(){
+  const PROF_KEY = "prof2025";  // ← change ici si tu veux
   const urlKey = new URLSearchParams(location.search).get("key");
 
   if (urlKey !== PROF_KEY) {
     document.body.innerHTML = `
-      <div style="max-width:520px;margin:60px auto;padding:18px;border-radius:14px;background:#0f1730;color:#fff;font-family:system-ui;">
-        <h2>Accès prof</h2>
-        <p>Accès refusé (clé manquante ou incorrecte).</p>
-        <p style="opacity:.8">Astuce : utilise l’URL avec <b>?key=...</b></p>
+      <div style="max-width:600px;margin:80px auto;padding:30px;
+                  background:#111;color:#fff;border-radius:12px;
+                  text-align:center;font-family:sans-serif;">
+        <h2>Accès réservé</h2>
+        <p>Clé manquante ou incorrecte.</p>
+        <p>Ajoute <b>?key=prof2025</b> à l’URL</p>
       </div>`;
     return;
   }
 })();
 </script>
+
+
 
 
 // ---------- Données élèves ----------
