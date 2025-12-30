@@ -297,96 +297,14 @@ body{
 .successTitle.done{text-decoration:line-through;opacity:.75}
 
 
-/* ===== Accès prof (clé) ===== */
-.gateOverlay{position:fixed;inset:0;display:none;align-items:center;justify-content:center;z-index:99999;
-  background:rgba(0,0,0,.65);backdrop-filter:blur(6px);padding:16px;pointer-events:auto;}
-.gateOverlay.show{display:flex;}
-.gateCard{max-width:520px;width:100%;background:rgba(15,22,40,.95);border:1px solid rgba(255,255,255,.12);
-  border-radius:18px;padding:22px 18px;text-align:center;box-shadow:0 20px 80px rgba(0,0,0,.55);}
-.gateIcon{font-size:34px;margin-bottom:8px}
-.gateTitle{font-size:28px;font-weight:800;margin:4px 0 6px}
-.gateText{opacity:.9;margin:0 0 14px}
-.gateBtn{cursor:pointer;border:1px solid rgba(255,255,255,.18);background:#3b82f6;color:#fff;
-  padding:10px 16px;border-radius:12px;font-weight:700}
-.gateBtn:hover{filter:brightness(1.05)}
-.gateHint{opacity:.75;margin-top:12px;font-size:13px}
 
-</style>
-</head>
-<body>
-
-<div id="profGate" class="gateOverlay" aria-hidden="true">
-  <div class="gateCard">
-    <div class="gateIcon">🔒</div>
-    <div class="gateTitle">Accès réservé</div>
-    <div class="gateText">Cette page est réservée à l’enseignant.</div>
-    <button id="gateBtn" class="gateBtn" type="button">Accès prof</button>
-    <div class="gateHint">Astuce : tu peux aussi utiliser l’URL avec <b>?key=…</b></div>
-  </div>
-</div>
-
-
-<header>
-  <div class="title">
-    <h1>Le Royaume d’Orthésia — 4e</h1>
-    <small>RPG local : effort, méthode, entraide — 4e. (Photos .png dans le même dossier que ce fichier .html)</small>
-  </div>
-  <div class="pillrow">
-    <span class="pill" id="pillChapter">Zone : —</span>
-    <span class="pill" id="pillTeam">Équipe : —</span>
-    <span class="pill" id="pillXP">XP total : —</span>
-  </div>
-</header>
-
-<main>
-  <div class="grid">
-    <section class="card nav">
-      <h2 class="sectionTitle">Menu</h2>
-      <button class="active" data-view="map">🗺️ Carte</button>
-      <button data-view="roster">👥 Équipe</button>
-      <button data-view="quests">📜 Quêtes</button>
-      <button data-view="battle">⚔️ Combat</button>
-      <button data-view="gm">🎮 Maître du jeu</button>
-        <button data-view="success">🏆 Succès</button>
-
-      <div class="hr"></div>
-      <p class="muted">
-        Changement de zone : cinématique (1,5s) + phrase d’histoire (dont l’arrivée de Louane une seule fois) + son “whoosh” + zoom caméra.
-      </p>
-      <div class="row" style="margin-top:10px">
-        <button class="btn danger" id="resetBtn">Réinitialiser</button>
-        <button class="btn" id="exportBtn">Exporter</button>
-        <button class="btn" id="importBtn">Importer</button>
-      </div>
-      <input class="select" id="importField" placeholder="Colle ici la sauvegarde JSON (Exporter) puis Entrée" />
-    </section>
-
-    <section class="card" id="view"></section>
-  </div>
-</main>
-
-<footer>
-  Photos : laisse le fichier <b>.html</b> dans le même dossier que les <b>.png</b>. Si une photo manque (ex : Louane), l’icône s’affiche à la place.
-</footer>
-
-<!-- Overlay cinématique de fin (OK : dans le BODY, pas dans le CSS) -->
-<div class="cineOverlay" id="cine">
-  <div class="cineCard">
-    <div class="cineTitle">✨ Victoire de Trimestre</div>
-    <p class="cineText" id="cineText"></p>
-    <p class="cineSmall">Cette victoire est collective : chacun a apporté quelque chose.</p>
-    <div class="row">
-      <button class="btn primary" onclick="closeCine()">Continuer</button>
-    </div>
-  </div>
-</div>
-
-<script>
-/* ===== Accès prof (clé) ===== */
+/* ===== Accès prof (clé) — V2 (URL + mémoire locale) ===== */
 (function(){
   const PROF_KEY = "prof2025"; // <-- change ici (unique)
   const params = new URLSearchParams(location.search);
-  const key = params.get("key");
+  const urlKey = (params.get("key") || "").trim();
+  const memKey = (localStorage.getItem("ORTHESIA_PROF_KEY") || "").trim();
+  const key = urlKey || memKey;
 
   const gate = document.getElementById("profGate");
   const btn = document.getElementById("gateBtn");
@@ -406,24 +324,36 @@ body{
     document.body.style.overflow = "";
   }
 
+  function unlock(withKey){
+    localStorage.setItem("ORTHESIA_PROF_KEY", withKey);
+    // Optionnel : on garde aussi l’URL propre
+    const url = new URL(location.href);
+    url.searchParams.set("key", withKey);
+    history.replaceState({}, "", url.toString());
+    hideGate();
+  }
+
   if(key !== PROF_KEY){
     showGate();
     if(btn){
       btn.addEventListener("click", ()=>{
         const v = prompt("Clé d’accès prof :", "");
         if(!v) return;
-        const url = new URL(location.href);
-        url.searchParams.set("key", v.trim());
-        location.href = url.toString();
+        const attempt = v.trim();
+        if(attempt === PROF_KEY){
+          unlock(attempt);
+        }else{
+          alert("Clé incorrecte.");
+        }
       });
     }
-    return;
+    return; // on laisse l’app chargée, mais bloquée par l’overlay
   }else{
+    // si la clé est bonne, on mémorise et on laisse passer
+    if(key) localStorage.setItem("ORTHESIA_PROF_KEY", key);
     hideGate();
   }
 })();
-
-
 
 function escapeHtml(str){
   if(typeof str!=="string") return "";
