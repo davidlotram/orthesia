@@ -1,15 +1,18 @@
 # 🔗 Liens d'accès – Projet Orthésia
 
-## 🎓 Versions professeur
-🔹 4e
+✅ Mets par exemple :
 
-👉 https://davidlotram.github.io/orthesia/classes/4e/orthesia_4e_prof.html
+Accueil élève :
+https://davidlotram.github.io/orthesia/
 
-🔹 5e Proust
+4e élève :
+https://davidlotram.github.io/orthesia/classes/4e/orthesia_view.html
 
-👉 https://davidlotram.github.io/orthesia/classes/5e-proust/orthesia_5e_proust_prof.html
+5e Proust élève :
+https://davidlotram.github.io/orthesia/classes/5e-proust/orthesia_view.html
 
-🔹 5e Sarraute
+5e Sarraute élève :
+https://davidlotram.github.io/orthesia/classes/5e-sarraute/orthesia_view.html
 
 👉 https://davidlotram.github.io/orthesia/classes/5e-sarraute/orthesia_5e_sarraute_prof.html
 
