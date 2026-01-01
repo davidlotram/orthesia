@@ -38,5 +38,29 @@ orthesia/
 ⚠️ Les versions professeur ne sont pas publiées sur GitHub Pages
 → elles sont conservées hors ligne ou dans une autre branche.
 
+🔒 Accès enseignants
+
+Les versions “professeur” (gestion des équipes, succès, progression, etc.)
+ne sont pas accessibles publiquement.
+
+👉 Elles sont conservées :
+
+soit localement,
+
+soit dans une branche non publiée (main),
+
+soit dans un dépôt privé.
+
+🧠 À propos d’Orthésia
+
+Orthésia est un environnement pédagogique ludifié qui permet de :
+
+travailler la lecture, l’écriture et l’oral,
+
+suivre la progression d’une classe,
+
+valoriser l’engagement par des mécaniques de jeu.
+
+📌 Pour toute question ou évolution du projet, contacter l’enseignant référent.
 
 
