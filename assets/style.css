@@ -1,0 +1,166 @@
+
+:root{--bg1:#070b16;--bg2:#081a3a;--card1:rgba(255,255,255,.08);--card2:rgba(255,255,255,.05);--line:rgba(255,255,255,.14);--text:#eaf1ff;--muted:rgba(234,241,255,.75);--accent:#7aa7ff;--accent2:#9bffde;--danger:#ff6b6b;}
+*{box-sizing:border-box}html,body{height:100%}
+body{margin:0;font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:var(--text);
+background:radial-gradient(1200px 750px at 20% 10%, #1b2b5a 0%, transparent 55%),
+radial-gradient(900px 650px at 85% 40%, #0f346e 0%, transparent 60%),
+linear-gradient(180deg,var(--bg1),var(--bg2));}
+a{color:inherit}.container{max-width:1120px;margin:0 auto;padding:34px 18px 64px}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:18px}
+.brand{display:flex;align-items:center;gap:12px}
+.logo{width:44px;height:44px;border-radius:14px;background:linear-gradient(135deg,var(--accent),var(--accent2));box-shadow:0 12px 30px rgba(122,167,255,.25);}
+.h1{margin:0;font-size:26px;font-weight:900;letter-spacing:.2px}
+.sub{margin:4px 0 0;color:var(--muted);line-height:1.35}
+.pill{display:inline-flex;align-items:center;gap:8px;padding:10px 12px;border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.06);color:var(--muted);font-size:13px;white-space:nowrap}
+.hero{display:grid;grid-template-columns:1.25fr .75fr;gap:16px;margin-top:16px}
+.card{background:linear-gradient(180deg,var(--card1),var(--card2));border:1px solid var(--line);border-radius:20px;padding:18px 18px 16px;box-shadow:0 18px 46px rgba(0,0,0,.30);}
+.card h2{margin:0 0 8px;font-size:18px}.card p{margin:0 0 12px;color:var(--muted);line-height:1.35}
+.grid{display:grid;grid-template-columns:repeat(12,1fr);gap:14px;margin-top:16px}
+.tile{grid-column:span 4}.row{display:flex;flex-wrap:wrap;gap:10px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:11px 12px;border-radius:14px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.06);font-weight:800;font-size:14px;text-decoration:none;cursor:pointer}
+.btn:hover{border-color:rgba(255,255,255,.28);transform:translateY(-1px)}
+.btnPrimary{background:linear-gradient(135deg, rgba(122,167,255,.35), rgba(155,255,222,.18));border-color:rgba(122,167,255,.45);}
+.input{width:100%;padding:12px 12px;border-radius:14px;border:1px solid rgba(255,255,255,.16);background:rgba(0,0,0,.20);color:var(--text);outline:none;font-size:14px}
+.input:focus{border-color:rgba(122,167,255,.65);box-shadow:0 0 0 3px rgba(122,167,255,.12)}
+.hint{color:var(--muted);font-size:12px;margin-top:10px;line-height:1.35}
+.warn{margin-top:12px;padding:12px 12px;border-radius:16px;border:1px solid rgba(255,107,107,.25);background:rgba(255,107,107,.08);color:rgba(234,241,255,.85);font-size:13px}
+.hr{height:1px;background:rgba(255,255,255,.12);margin:18px 0}
+.footer{color:var(--muted);font-size:12px;margin-top:18px}
+pre{margin:0}
+@media (max-width:880px){.hero{grid-template-columns:1fr}.tile{grid-column:span 12}}
+
+/* =========================
+   📱 MODE MOBILE (≤ 820px)
+   ========================= */
+@media (max-width: 820px) {
+  body { font-size: 16px; }
+
+  /* Conteneur principal */
+  .container { padding: 12px; }
+
+  /* Topbar : empile */
+  .topbar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+  .brand { gap: 10px; }
+  .h1 { font-size: 22px; line-height: 1.15; }
+  .sub { font-size: 14px; opacity: .9; }
+
+  /* Grille : menu au-dessus, contenu en dessous */
+  .grid {
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+    margin-top: 12px;
+  }
+
+ /* Menu : en “barre” plus compacte */
+  .sidebar { position: static; }
+  .nav {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 8px;
+  }
+  .nav button {
+    padding: 12px 10px;
+    font-size: 14px;
+    border-radius: 14px;
+  }
+
+  /* Cartes / panneaux */
+  .panel, .card {
+    border-radius: 18px;
+    padding: 14px;
+  }
+
+  /* “Vue élèves” (iframe) : hauteur mobile */
+  iframe {
+    width: 100% !important;
+    height: 72vh !important;
+    border-radius: 18px !important;
+  }
+
+  /* Cartes de zones : une colonne */
+  .map {
+    min-height: 420px;
+  }
+  .zone {
+    width: 92% !important;
+    left: 4% !important;
+    transform: none !important;
+  }
+
+  /* Tableaux : scroll horizontal */
+  table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  /* Boutons / inputs : plus “pouce-friendly” */
+  input, textarea, select, button {
+    font-size: 16px;
+  }
+}
+
+/* =========================
+   📱 TRÈS PETITS ÉCRANS (≤ 420px)
+   ========================= */
+@media (max-width: 420px) {
+  .nav { grid-template-columns: 1fr 1fr; }
+  .h1 { font-size: 20px; }
+}
+/* ===== Fix page "Accès par classe" : éviter le chevauchement ===== */
+
+/* Le bloc des 3 classes (ton div en grid) */
+.hero .card > div[style*="grid-template-columns"]{
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 12px !important;
+  align-items: stretch !important;
+}
+
+/* Chaque tuile = ton <a class="btn"> ... */
+.hero .card > div[style*="grid-template-columns"] > a.btn{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+
+  padding: 16px;
+  min-height: 170px;
+  border-radius: 18px;
+
+  position: relative;
+  overflow: hidden;
+  text-align: left;
+}
+
+/* Le texte descriptif doit prendre la place disponible */
+.hero .card > div[style*="grid-template-columns"] > a.btn .desc{
+  flex: 1 1 auto;
+  margin-top: 10px;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+
+/* Le "bouton" Ouvrir la classe : le pousser en bas, plus de superposition */
+.hero .card > div[style*="grid-template-columns"] > a.btn .pill{
+  margin-top: 14px;
+  align-self: flex-end;
+  white-space: nowrap;
+}
+
+/* Responsive */
+@media (max-width: 900px){
+  .hero .card > div[style*="grid-template-columns"]{
+    grid-template-columns: 1fr !important;
+  }
+  .hero .card > div[style*="grid-template-columns"] > a.btn .pill{
+    align-self: stretch;
+    text-align: center;
+  }
+}
+
+
