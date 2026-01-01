@@ -6,7 +6,7 @@ Accueil élève :
 https://davidlotram.github.io/orthesia/
 
 4e élève :
-https://davidlotram.github.io/orthesia/classes/4e/orthesia_view.html
+https://davidlotram.github.io/orthesia/classes/4e/orthesia_4e_prof.html
 
 5e Proust élève :
 https://davidlotram.github.io/orthesia/classes/5e-proust/orthesia_view.html
