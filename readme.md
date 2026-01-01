@@ -3,7 +3,7 @@
 ## 🎓 Versions professeur
 🟦 4e –
 
-👉 https://davidlotram.github.io/orthesia/classes/4e/orthesia_4e_prof.html
+👉 https://davidlotram.github.io/orthesia/classes/4e/orthesia_4e_prof_voies_quete_menu_fantasy_map_v5_mapfix5.html
 
 
 
