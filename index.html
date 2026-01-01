@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Orthésia — Accès par classe</title>
+  <link rel="stylesheet" href="assets/style.css"/>
+
+  <!-- ✅ Correctif local (tu peux aussi le mettre dans assets/style.css) -->
+  <style>
+    /* Grille des classes */
+    .classGrid{
+      display:grid;
+      grid-template-columns:repeat(3, minmax(0, 1fr));
+      gap:12px;
+      margin-top:14px;
+      align-items:stretch;
+    }
+
+    /* Chaque carte = lien */
+    .classGrid > a.btn{
+      display:flex;
+      flex-direction:column;
+      align-items:flex-start;
+      text-align:left;
+
+      padding:16px;
+      min-height:170px;
+      border-radius:18px;
+
+      position:relative;
+      overflow:hidden;
+    }
+
+    .classGrid > a.btn .top{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      font-weight:700;
+    }
+
+    /* Le texte prend la place, et pousse le bouton en bas */
+    .classGrid > a.btn .desc{
+      flex:1 1 auto;
+      margin-top:10px;
+      line-height:1.25;
+      overflow-wrap:anywhere;
+    }
+
+    /* Le "bouton" reste en bas, jamais par-dessus le texte */
+    .classGrid > a.btn .pill{
+      margin-top:14px;
+      align-self:flex-end;
+      white-space:nowrap;
+    }
+
+    /* Responsive */
+    @media (max-width:900px){
+      .classGrid{
+        grid-template-columns:1fr;
+      }
+      .classGrid > a.btn .pill{
+        align-self:stretch;
+        text-align:center;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="topbar">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <div>
+          <h1 class="h1">Orthésia — Accès par classe</h1>
+          <div class="sub">Site de consultation (lecture seule). Choisis ta classe.</div>
+        </div>
+      </div>
+      <div class="pill">📌 Version élève</div>
+    </div>
+
+    <div class="hero">
+      <div class="card">
+        <h2>👉 Choisis ta classe</h2>
+        <p>Clique sur ton groupe pour ouvrir ton espace Orthésia.</p>
+
+        <!-- ✅ on remplace le style inline par une vraie classe -->
+        <div class="classGrid">
+          <a class="btn" href="classes/4e/orthesia_4e_prof.html">
+            <div class="top"><span class="emoji">📘</span> 4e</div>
+            <div class="desc">Carte + Équipe + Quêtes + Combat + Maître du jeu</div>
+            <div class="pill">Ouvrir la classe</div>
+          </a>
+
+          <a class="btn" href="classes/5e-proust/orthesia_5e_proust_prof.html">
+            <div class="top"><span class="emoji">🟩</span> 5e Proust</div>
+            <div class="desc">Même système Orthésia, sauvegarde indépendante</div>
+            <div class="pill">Ouvrir la classe</div>
+          </a>
+
+          <a class="btn" href="classes/5e-sarraute/orthesia_5e_sarraute_prof.html">
+            <div class="top"><span class="emoji">🟪</span> 5e Sarraute</div>
+            <div class="desc">Même système Orthésia, sauvegarde indépendante</div>
+            <div class="pill">Ouvrir la classe</div>
+          </a>
+        </div>
+
+        <div class="hint" style="margin-top:12px">
+          Astuce : si rien ne s’ouvre, préviens le professeur.
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>✅ Ce que tu peux faire</h2>
+        <p>Consulter : Carte • Équipe • Quêtes • Progrès • Boss • Succès.</p>
+        <div class="hr"></div>
+        <h2>🚫 Ce que tu ne peux pas faire</h2>
+        <p>Modifier la progression officielle (elle reste dans la version prof).</p>
+      </div>
+    </div>
+
+    <div class="grid">
+      <div class="card tile">
+        <h2>📌 En cas de problème</h2>
+        <p>1) Vérifie que tu es sur la bonne classe. 2) Recharge la page. 3) Demande au professeur.</p>
+        <div class="hint">Ce site fonctionne aussi hors ligne (clé USB).</div>
+      </div>
+
+      <div class="card tile">
+        <h2>📘 Aide</h2>
+        <p>Besoin d’un rappel des règles du jeu ?</p>
+        <a class="btn" href="eleve.html">🎒 Mode d’emploi élève</a>
+      </div>
+
+      <div class="card tile">
+        <h2>🎨 Interface Orthésia</h2>
+        <p>Si l’affichage est trop petit : zoome (Ctrl + +) ou passe en plein écran (F11).</p>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
