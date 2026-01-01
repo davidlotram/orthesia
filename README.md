@@ -6,3 +6,7 @@ https://davidlotram.github.io/orthesia/classes/5e-proust/orthesia_5e_proust_prof
 
 🟪 5e Sarraute
 https://davidlotram.github.io/orthesia/classes/5e-sarraute/orthesia_5e_sarraute_prof.html
+
+🧩 Générateur universel  
+https://davidlotram.github.io/orthesia/orthesia_generateur_universel.html
+
