@@ -71,6 +71,7 @@
     sessionStorage.setItem("orthesia_class", c.slug);
    window.location.href = "classes/" + c.slug + "/" + (c.file || "index.html");
 
+
   }
   document.getElementById("go").addEventListener("click", go);
   document.getElementById("code").addEventListener("keydown", (e)=>{ if(e.key==="Enter") go(); });
