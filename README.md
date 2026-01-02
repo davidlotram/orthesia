@@ -5,11 +5,7 @@ Elle permet de travailler les compétences de français sous forme de cartes, qu
 
 ---
 
-https://github.com/davidlotram/orthesia/blob/main/classes/4e/orthesia_4e_prof.html
-
-https://github.com/davidlotram/orthesia/blob/main/classes/5e-proust/orthesia_5e_proust_prof.html
-
-https://github.com/davidlotram/orthesia/blob/main/classes/5e-sarraute/orthesia_5e_sarraute_prof.html
+https://raw.githubusercontent.com/davidlotram/orthesia/main/classes/4e/orthesia_4e_prof.html
 
 
 
