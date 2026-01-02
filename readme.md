@@ -81,12 +81,5 @@ valoriser l’engagement,
 
 structurer le travail en classe de manière ludique.
 
-📌 En cas de besoin
-
-Pour toute modification, maintenance ou évolution du projet :
-
-travailler dans la branche main
-
-publier uniquement les fichiers destinés aux élèves sur gh-pages
 
 ✨ Orthésia — Apprendre autrement, progresser ensemble.
