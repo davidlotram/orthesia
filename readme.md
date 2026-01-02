@@ -10,7 +10,7 @@ Bienvenue sur Orthésia, un environnement pédagogique interactif destiné aux �
 Accès par classes:
 
 4e
-https://davidlotram.github.io/orthesia/classes/4e/orthesia_view.html
+https://davidlotram.github.io/orthesia/classes/4e/orthesia_4e_view.html
 
 5e Proust
 https://davidlotram.github.io/orthesia/classes/5e-proust/orthesia_view.html
