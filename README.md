@@ -18,6 +18,8 @@ https://davidlotram.github.io/orthesia/classes/5e-proust/orthesia_5e_proust.html
 ### 🟪 5e Sarraute
 https://davidlotram.github.io/orthesia/classes/5e-sarraute/orthesia_5e_sarraute.html
 
+https://davidlotram.github.io/orthesia/
+
 ---
 
 ## ℹ️ À propos
