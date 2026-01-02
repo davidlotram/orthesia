@@ -400,6 +400,46 @@ function renderProgress(){
 }
 
 setView("map");
+</script> 
+  <script>
+  // ✅ Mode élève (lecture seule) : on cache et on désactive les actions prof
+  (function () {
+    const selectors = [
+      'button:contains("Réinitialiser")',
+      'button:contains("Exporter")',
+      'button:contains("Importer")',
+      'a:contains("Maître du jeu")',
+      'button:contains("Donner de l’XP")',
+      'button:contains("Donner de l\'XP")',
+      '#btnReset', '#btnExport', '#btnImport', '#btnGiveXP',
+      '.profOnly', '.adminOnly', '[data-prof]'
+    ];
+
+    // cache par mots (plus fiable que :contains qui n'existe pas en CSS natif)
+    const killByText = (tag, texts) => {
+      document.querySelectorAll(tag).forEach(el => {
+        const t = (el.textContent || "").toLowerCase();
+        if (texts.some(x => t.includes(x))) {
+          el.style.display = "none";
+          el.disabled = true;
+          el.onclick = null;
+        }
+      });
+    };
+
+    killByText("button", ["réinitialiser", "exporter", "importer", "donner de l’xp", "donner de l'xp"]);
+    killByText("a", ["maître du jeu"]);
+
+    // neutralise aussi les formulaires d'import si présents
+    document.querySelectorAll("input[type=file], textarea").forEach(el => {
+      const ph = (el.getAttribute("placeholder") || "").toLowerCase();
+      if (ph.includes("json") || ph.includes("sauvegarde")) {
+        el.disabled = true;
+        el.style.display = "none";
+      }
+    });
+  })();
 </script>
-</body>
+
+</body> 
 </html>
