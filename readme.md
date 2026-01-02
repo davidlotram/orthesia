@@ -5,7 +5,18 @@ Bienvenue sur Orthésia, un environnement pédagogique interactif destiné aux �
 🎓 Accès Élèves
 
 👉 Accès direct à la plateforme élève :
-🔗 https://davidlotram.github.io/orthesia/
+🔗 https://davidlotram.github.io/orthesia/ 
+
+Accès par classes:
+
+4e
+https://davidlotram.github.io/orthesia/classes/4e/orthesia_view.html
+
+5e Proust
+https://davidlotram.github.io/orthesia/classes/5e-proust/orthesia_view.html
+
+5e Sarraute
+https://davidlotram.github.io/orthesia/classes/5e-sarraute/orthesia_view.html
 
 Cette version permet aux élèves de :
 
