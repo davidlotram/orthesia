@@ -3,20 +3,17 @@
 Bienvenue sur Orthésia, un environnement pédagogique interactif destiné aux élèves de collège, basé sur une approche ludifiée de l’apprentissage du français.
 
 🎓 Accès Élèves
+Portail élèves :
+https://davidlotram.github.io/orthesia/
 
-👉 Accès direct à la plateforme élève :
-🔗 https://davidlotram.github.io/orthesia/ 
+4e :
+https://davidlotram.github.io/orthesia/classes/4e/
 
-Accès par classes:
+5e Proust :
+https://davidlotram.github.io/orthesia/classes/5e-proust/
 
-4e
-https://davidlotram.github.io/orthesia/classes/4e/orthesia_4e_view.html
-
-5e Proust
-https://davidlotram.github.io/orthesia/classes/5e-proust/orthesia_view.html
-
-5e Sarraute
-https://davidlotram.github.io/orthesia/classes/5e-sarraute/orthesia_view.html
+5e Sarraute :
+https://davidlotram.github.io/orthesia/classes/5e-sarraute/
 
 Cette version permet aux élèves de :
 
