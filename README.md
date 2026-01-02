@@ -10,7 +10,7 @@ Elle permet de travailler les compétences de français sous forme de cartes, qu
 👉 Les élèves doivent utiliser **les liens ci-dessous** pour accéder à leur espace de travail.
 
 ### 📘 4e
-https://davidlotram.github.io/orthesia/classes/4e/orthesia_4e.html
+https://davidlotram.github.io/orthesia/classes/4e/orthesia_4e_prof.html
 
 ### 🟩 5e Proust
 https://davidlotram.github.io/orthesia/classes/5e-proust/orthesia_5e_proust.html
