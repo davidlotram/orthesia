@@ -4,6 +4,7 @@ Bienvenue sur **Orthésia**, une plateforme pédagogique interactive destinée a
 Elle permet de travailler les compétences de français sous forme de cartes, quêtes et progression ludifiée.
 
 ---
+
 https://github.com/davidlotram/orthesia/blob/main/classes/4e/orthesia_4e_prof.html
 
 https://github.com/davidlotram/orthesia/blob/main/classes/5e-proust/orthesia_5e_proust_prof.html
@@ -12,11 +13,7 @@ https://github.com/davidlotram/orthesia/blob/main/classes/5e-sarraute/orthesia_5
 
 
 
-
-
-
-
----
+--
 
 ## ℹ️ À propos
 - Chaque classe possède son **espace indépendant**.
