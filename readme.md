@@ -1,70 +1,92 @@
-📘 Orthésia — Plateforme pédagogique
+🎓 Orthésia — Plateforme pédagogique
 
-Bienvenue sur Orthésia, un environnement pédagogique interactif destiné aux élèves de collège, basé sur une approche ludifiée de l’apprentissage du français.
+Bienvenue sur Orthésia, une plateforme éducative conçue pour accompagner les élèves de collège dans leurs apprentissages à travers un univers ludifié.
 
-🎓 Accès Élèves
-Portail élèves :
-https://davidlotram.github.io/orthesia/
+🚀 Accès Élèves
 
-4e : https://davidlotram.github.io/orthesia/classes/4e/
+Les élèves accèdent directement à leur espace de travail via les liens ci-dessous :
 
-5e Proust : https://davidlotram.github.io/orthesia/classes/5e-proust/
+🔹 Classes
 
-5e Sarraute : https://davidlotram.github.io/orthesia/classes/5e-sarraute/
-Cette version permet aux élèves de :
+4e
+👉 https://davidlotram.github.io/orthesia/classes/4e/
 
-naviguer dans les cartes de progression,
+5e Proust
+👉 https://davidlotram.github.io/orthesia/classes/5e-proust/
+
+5e Sarraute
+👉 https://davidlotram.github.io/orthesia/classes/5e-sarraute/
+
+Chaque espace permet de :
+
+consulter les cartes et parcours pédagogiques,
 
 suivre les quêtes et défis proposés,
 
-visualiser leurs progrès,
+visualiser sa progression.
 
-interagir avec les mécaniques de jeu (sans accès aux outils enseignants).
+🧭 Fonctionnement général
 
-🧭 Organisation du projet
-
-Le site est structuré de la manière suivante :
+L’ensemble du site repose sur une structure simple :
 
 orthesia/
 │
-├── index.html            → Page d’accueil élève
+├── index.html              → Accueil élèves
 ├── classes/
 │   ├── 4e/
-│   │   └── (version élève)
+│   │   └── orthesia_4e_view.html
 │   ├── 5e-proust/
-│   │   └── (version élève)
+│   │   └── orthesia_5e_proust_view.html
 │   └── 5e-sarraute/
-│       └── (version élève)
+│       └── orthesia_5e_sarraute_view.html
 │
-└── (autres fichiers techniques)
+└── assets/                 → Styles, images, ressources
 
 
-⚠️ Les versions professeur ne sont pas publiées sur GitHub Pages
-→ elles sont conservées hors ligne ou dans une autre branche.
+Chaque dossier de classe contient sa propre version élève, totalement indépendante.
 
-🔒 Accès enseignants
+🔐 Accès enseignant (non public)
 
-Les versions “professeur” (gestion des équipes, succès, progression, etc.)
-ne sont pas accessibles publiquement.
+Les versions enseignant (gestion, progression, paramétrage) ne sont pas accessibles depuis le site public.
 
-👉 Elles sont conservées :
+Elles sont :
 
-soit localement,
+stockées dans la branche main,
 
-soit dans une branche non publiée (main),
+ou conservées localement sur l’ordinateur de l’enseignant,
 
-soit dans un dépôt privé.
+volontairement absentes du site publié.
 
-🧠 À propos d’Orthésia
+👉 Les élèves ne peuvent ni les voir, ni y accéder.
 
-Orthésia est un environnement pédagogique ludifié qui permet de :
+🔒 Sécurité & bonnes pratiques
 
-travailler la lecture, l’écriture et l’oral,
+Aucun lien enseignant n’est présent sur le site public.
 
-suivre la progression d’une classe,
+Les pages élèves sont en lecture seule.
 
-valoriser l’engagement par des mécaniques de jeu.
+Les fichiers sensibles ne sont pas publiés sur GitHub Pages.
 
-📌 Pour toute question ou évolution du projet, contacter l’enseignant référent.
+La structure évite toute navigation accidentelle vers des zones internes.
 
+🧠 Objectif pédagogique
 
+Orthésia vise à :
+
+encourager l’autonomie,
+
+rendre visibles les progrès,
+
+valoriser l’engagement,
+
+structurer le travail en classe de manière ludique.
+
+📌 En cas de besoin
+
+Pour toute modification, maintenance ou évolution du projet :
+
+travailler dans la branche main
+
+publier uniquement les fichiers destinés aux élèves sur gh-pages
+
+✨ Orthésia — Apprendre autrement, progresser ensemble.
