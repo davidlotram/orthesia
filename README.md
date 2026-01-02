@@ -5,21 +5,13 @@ Elle permet de travailler les compétences de français sous forme de cartes, qu
 
 ---
 
-## 🚀 Accès élèves
 
-👉 Les élèves doivent utiliser **les liens ci-dessous** pour accéder à leur espace de travail.
-
-### 📘 4e
-https://davidlotram.github.io/orthesia/classes/4e/orthesia_4e_prof.html
-
-### 🟩 5e Proust
-https://davidlotram.github.io/orthesia/classes/5e-proust/orthesia_5e_proust.html
-
-### 🟪 5e Sarraute
-https://davidlotram.github.io/orthesia/classes/5e-sarraute/orthesia_5e_sarraute.html
 
 https://davidlotram.github.io/orthesia/
-
+](https://github.com/davidlotram/orthesia/blob/main/orthesia_4e_prof.html
+https://github.com/davidlotram/orthesia/blob/main/orthesia_5e_proust_prof.html
+https://github.com/davidlotram/orthesia/blob/main/orthesia_5e_sarraute_prof.html
+)
 ---
 
 ## ℹ️ À propos
