@@ -4,9 +4,9 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>📜 Archives d’Orthésia — 4e</title>
-  
+
 <style>
-    :root{
+:root{
       --bg1:#070b14;
       --bg2:#0b1330;
       --card:rgba(255,255,255,.06);
@@ -105,7 +105,7 @@
     }
     .entry h3{margin:0 0 6px; font-size:14px;}
     .meta{color:rgba(255,255,255,.6); font-size:12px; margin-bottom:8px}
-    .entry p{margin:0; color:rgba(255,255,255,.82); white-space:pre-wrap;}
+    .entry p{margin: 0; line-height:1.6; color:rgba(255,255,255,.82); white-space:pre-wrap;}
     .gallery{
       display:grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -136,6 +136,59 @@
       .gallery{grid-template-columns:1fr}
       .imgcard .ph{height:220px}
     }
+/* ===== Entrée Grimoire : encre claire + lettrine ===== */
+.entry--grimoire{
+  padding: 20px 22px 18px;
+  border-radius: 18px;
+  border: 1px solid rgba(255,255,255,.14);
+  background:
+    radial-gradient(800px 500px at 30% 20%, rgba(180,200,255,.12), transparent 60%),
+    linear-gradient(180deg, rgba(20,30,60,.85), rgba(8,12,25,.9));
+  box-shadow: 0 22px 55px rgba(0,0,0,.45);
+}
+
+.entry--grimoire .meta{
+  font-size: 12px;
+  opacity: .75;
+  margin-bottom: 6px;
+}
+
+.entry--grimoire .entry-title{
+  margin: 0 0 12px 0;
+  font-size: 19px;
+  letter-spacing: .4px;
+  color: #f2f5ff;
+}
+
+/* Texte principal */
+.entry--grimoire .story{
+  font-size: 14.5px;
+  line-height: 1.65;
+  color: rgba(235,240,255,.95);
+}
+
+/* Paragraphes */
+.entry--grimoire .story p{
+  margin: 0 0 12px 0;
+}
+
+/* ===== LETTRINE ===== */
+.entry--grimoire .story.lettrine p:first-child::first-letter{
+  float: left;
+  font-size: 3.2em;
+  line-height: 1;
+  padding: 6px 8px 0 0;
+  font-weight: 700;
+  color: #e6ecff;
+  text-shadow:
+    0 0 6px rgba(140,170,255,.35),
+    0 2px 4px rgba(0,0,0,.4);
+}
+
+/* Dernier paragraphe */
+.entry--grimoire .story p:last-child{
+  margin-bottom: 0;
+}
 </style>
 
 </head>
@@ -167,7 +220,7 @@
             <li>On respecte les auteurs et le travail des autres.</li>
             <li>Pas de moqueries : on valorise la créativité.</li>
             <li>Les publications sont validées par le professeur.</li>
-            <li>Crédit : <strong>4e</strong> (pas de noms d’élèves).</li>
+            <li>Crédit : <strong>4e</strong> (ou prénom + classe si tu le souhaites).</li>
           </ul>
         </div>
       </div>
@@ -187,23 +240,44 @@
 
     <section class="card" style="margin-top:12px">
       <h2>✍️ Chroniques</h2>
-      <p>Duplique un bloc ci-dessous pour ajouter une nouvelle production (copier-coller).</p>
+      <p>Duplique un bloc <code>&lt;div class="entry"&gt;...&lt;/div&gt;</code> pour ajouter une nouvelle production.</p>
 
+      <!-- Exemple 1 -->
       <div class="entry">
-        <h3>🗺️ Exemple 1 — Un lieu : « La Vallée des Échos »</h3>
+        <h3>🗺️ Exemple — Un lieu : « La Vallée des Échos »</h3>
         <div class="meta">Crédit : 4e • Rubrique : Lieux & Cartes</div>
-        <p>Dans le royaume d’Orthésia, il existe une vallée où les paroles reviennent comme des échos.
-On dit que les élèves qui y passent apprennent à choisir leurs mots avec soin…
-(Colle ici le texte d’élève / groupe.)</p>
+        <p>
+          Dans le royaume d’Orthésia, il existe une vallée où les paroles reviennent comme des échos.
+          On dit que les élèves qui y passent apprennent à choisir leurs mots avec soin…
+          (Remplace ce texte par une production.)
+        </p>
       </div>
 
-      <div class="entry">
-        <h3>⚔️ Exemple 2 — Un boss : « Le Monstre du Brouillon »</h3>
-        <div class="meta">Crédit : 4e • Rubrique : Combats & Boss</div>
-        <p>Autrefois, un boss apparaissait dès qu’on écrivait trop vite : le Monstre du Brouillon.
-Pour le vaincre, il fallait relire, corriger et améliorer chaque phrase…
-(Colle ici le texte d’élève / groupe.)</p>
+      <!-- Chronique Grimoire -->
+      <div class="entry entry--grimoire">
+        <div class="meta">Crédit : Lena — 4e • Rubrique : Chroniques</div>
+        <h3 class="entry-title">La frontière dangereuse</h3>
+        <div class="story lettrine">
+          <p>
+            Orthésia était une ville avec une forêt, une cité, un donjon et une frontière dangereuse.
+            Si un jour vous avez le malheur d’aller à deux mètres de cette frontière, il y a de fortes chances
+            que vous y trouviez la mort car de l’autre côté de cette frontière se trouve un monstre.
+          </p>
+          <p>
+            Certaines personnes se nourrissaient de son pouvoir, en étaient même assoiffées.
+            Chaque fois que les alliés du monstre tuaient quelqu’un, ils gagnaient un peu de son pouvoir.
+          </p>
+          <p>
+            Mais un jour je décidai de passer cette frontière…
+          </p>
+          <p>
+            Alors je décidai de créer une nouvelle règle disant que maintenant on pourrait entrer
+            dans la frontière dangereuse. Les habitants décidèrent de la renommer
+            <strong>frontière de la paix</strong>.
+          </p>
+        </div>
       </div>
+
     </section>
 
     <section class="card" style="margin-top:12px">
