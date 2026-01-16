@@ -1,0 +1,409 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Orthésia — Consultation</title>
+<style>
+:root{--bg:#0b1020;--text:#f5f5f5;--muted:#c9c9c9;--line:rgba(255,255,255,.12);--accent:rgba(139,211,255,.16);}
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+  background:radial-gradient(1200px 700px at 20% 10%, #18214a 0%, var(--bg) 55%),
+             radial-gradient(900px 600px at 90% 30%, #1a3b3b 0%, rgba(0,0,0,0) 60%);
+  color:var(--text)}
+body.wm::before{content:attr(data-wm);position:fixed;inset:0;display:flex;align-items:center;justify-content:center;
+  font-size:clamp(18px,3.2vw,40px);letter-spacing:.6px;color:rgba(255,255,255,.07);transform:rotate(-18deg);
+  pointer-events:none;z-index:0;white-space:nowrap;user-select:none}
+header{padding:18px;border-bottom:1px solid var(--line);background:rgba(18,26,51,.55);backdrop-filter:blur(8px);
+  position:sticky;top:0;z-index:10;display:flex;gap:10px;align-items:flex-start;justify-content:space-between;flex-wrap:wrap}
+.title h1{margin:0;font-size:16px}
+.title small{color:var(--muted);display:block;margin-top:2px}
+.updated{margin-top:6px;color:var(--muted);font-size:12px}
+.pillrow{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.pill{padding:6px 10px;border:1px solid var(--line);background:rgba(255,255,255,.06);border-radius:999px;font-size:12px}
+main{max-width:1100px;margin:0 auto;padding:18px;position:relative;z-index:1}
+.grid{display:grid;grid-template-columns:280px 1fr;gap:14px}
+@media(max-width:900px){.grid{grid-template-columns:1fr}}
+.card{border:1px solid var(--line);background:rgba(18,26,51,.55);border-radius:16px;padding:14px;box-shadow:0 18px 50px rgba(0,0,0,.35)}
+.muted{color:var(--muted);font-size:13px;line-height:1.35}
+.mini{color:var(--muted);font-size:12px;line-height:1.35}
+.hr{height:1px;background:var(--line);margin:12px 0}
+.nav button{width:100%;padding:10px 12px;border-radius:12px;border:1px solid var(--line);background:rgba(255,255,255,.06);
+  color:var(--text);cursor:pointer;text-align:left;margin-bottom:8px}
+.nav button.active{background:var(--accent);border-color:rgba(139,211,255,.35)}
+.map{position:relative;border:1px solid var(--line);border-radius:16px;overflow:hidden;min-height:440px;background:rgba(0,0,0,.20)}
+.mapCam{position:absolute;inset:0}
+.node{position:absolute;width:min(160px,42vw);padding:8px 9px;border-radius:14px;border:1px solid var(--line);background:rgba(0,0,0,.22)}
+.node h3{margin:0 0 3px;font-size:12px}
+.node small{color:var(--muted);font-size:11px;line-height:1.15}
+.badge{display:inline-block;margin-top:8px;padding:4px 8px;border-radius:999px;font-size:12px;border:1px solid var(--line);background:rgba(255,255,255,.06)}
+.node.selected{background:rgba(139,211,255,.18);border-color:rgba(139,211,255,.45)}
+.list{display:grid;grid-template-columns:repeat(2,minmax(240px,1fr));gap:10px}
+@media(max-width:900px){.list{grid-template-columns:1fr}}
+.char{border:1px solid var(--line);border-radius:14px;padding:12px;background:rgba(0,0,0,.18)}
+.charTop{display:flex;justify-content:space-between;gap:10px;align-items:center}
+.tag{font-size:12px;color:var(--muted)}
+.bar{height:10px;border-radius:999px;background:rgba(255,255,255,.08);overflow:hidden;border:1px solid var(--line);margin-top:10px}
+.bar>div{height:100%;width:0%}
+.barXp>div{background:linear-gradient(90deg, rgba(139,211,255,.9), rgba(157,255,176,.9))}
+.stats{margin-top:8px;display:flex;gap:10px;flex-wrap:wrap;color:var(--muted);font-size:12px}
+.avatarBox{width:44px;height:44px;border-radius:12px;overflow:hidden;border:1px solid var(--line);background:rgba(255,255,255,.06);
+  display:flex;align-items:center;justify-content:center;flex:0 0 auto}
+.avatarBox img{width:100%;height:100%;object-fit:cover}
+.avatarFallback{font-size:22px}
+footer{padding:14px 18px;color:var(--muted);font-size:12px;text-align:center;position:relative;z-index:1}
+.hpWrap{border:1px solid rgba(255,255,255,.14);border-radius:14px;overflow:hidden;background:rgba(255,255,255,.06);height:14px}
+.hpFill{height:100%;width:100%;transition:width .35s ease;background:linear-gradient(90deg, rgba(157,255,176,.95), rgba(139,211,255,.75))}
+.hpLabel{font-size:12px;color:rgba(255,255,255,.78);margin:6px 0 10px}
+.table{width:100%;border-collapse:separate;border-spacing:0 8px}
+.table td,.table th{padding:8px 10px;border:1px solid rgba(255,255,255,.12);background:rgba(0,0,0,.18)}
+.table th{color:rgba(255,255,255,.82);font-size:12px;text-align:left}
+.pillOk{display:inline-block;padding:3px 8px;border-radius:999px;border:1px solid rgba(255,255,255,.16);background:rgba(157,255,176,.15);font-size:12px}
+.pillTodo{display:inline-block;padding:3px 8px;border-radius:999px;border:1px solid rgba(255,255,255,.16);background:rgba(255,231,136,.12);font-size:12px}
+</style>
+</head>
+<body>
+<header>
+<div class="top-actions">
+  <a href="archives.html" class="btn-archive">📜 Archives d’Orthésia</a>
+</div>
+
+  <div class="title">
+    <h1 id="pageTitle"></h1>
+    <small id="pageSubtitle"></small>
+    <div class="updated" id="updatedAt" style="display:none"></div>
+  </div>
+  <div class="pillrow">
+    <span class="pill" id="pillChapter">Zone : —</span>
+    <span class="pill" id="pillTeam">Équipe : —</span>
+    <span class="pill" id="pillXP">XP total : —</span>
+  </div>
+</header>
+
+<main>
+  <div class="grid">
+    <section class="card nav">
+      <h2 style="margin:0 0 8px;font-size:14px">Menu</h2>
+      <button class="active" data-view="map">🗺️ Carte</button>
+      <button data-view="roster">👥 Équipe</button>
+      <button data-view="quests">📜 Quêtes</button>
+      <button data-view="progress">🏆 Progrès</button>
+      <div class="hr"></div>
+      <p class="muted"><b>Lecture seule :</b> tu peux consulter les avancées, rien modifier.</p>
+    </section>
+
+    <section class="card" id="view"></section>
+  </div>
+</main>
+
+<footer id="footerText"></footer>
+
+<script type="application/json" id="META">{"title":"Le Royaume d’Orthésia","subtitle":"Version consultation (lecture seule) — aucune modification possible ici.","footer":"Page de consultation. Les mises à jour sont publiées par le professeur.","watermark":"Orthésia — Consultation","watermarkOn":true,"stampOn":true,"updatedAt":"16/01/2026 à 18:04"}</script>
+<script type="application/json" id="STATE">{"zoneId":"plaine","party":[{"id":"s0","name":"Aelig","cls":"Éclaireur","trait":"courage","role":null,"quest":"Quête : M’appuyer sur une méthode simple : lire la consigne jusqu’au bout, planifier en 2 étapes, puis relire et corriger.","xp":10,"hp":30,"hpMax":30,"portrait":"aelig.png","icon":"✨","questType":"methode"},{"id":"s1","name":"Anaelle","cls":"Gardien","trait":"curiosité","role":null,"quest":"Quête : M’appuyer sur une méthode simple : lire la consigne jusqu’au bout, planifier en 2 étapes, puis relire et corriger.","xp":10,"hp":30,"hpMax":30,"portrait":"anaelle.png","icon":"🛡️","questType":"methode"},{"id":"s2","name":"Angus","cls":"Savant","trait":"persévérance","role":null,"quest":"Quête : M’appuyer sur une méthode simple : lire la consigne jusqu’au bout, planifier en 2 étapes, puis relire et corriger.","xp":10,"hp":30,"hpMax":30,"portrait":"angus.png","icon":"🧠","questType":"methode"},{"id":"s3","name":"Antone","cls":"Messager","trait":"confiance","role":null,"quest":"Quête : M’appuyer sur une méthode simple : lire la consigne jusqu’au bout, planifier en 2 étapes, puis relire et corriger.","xp":10,"hp":30,"hpMax":30,"portrait":"antone.png","icon":"💬","questType":"methode"},{"id":"s4","name":"Charlotte","cls":"Scribe","trait":"rigueur","role":null,"quest":"Quête : M’appuyer sur une méthode simple : lire la consigne jusqu’au bout, planifier en 2 étapes, puis relire et corriger.","xp":10,"hp":30,"hpMax":30,"portrait":"charlotte.png","icon":"✒️","questType":"methode"},{"id":"s5","name":"Diane","cls":"Éclaireur","trait":"courage","role":null,"quest":"Quête : M’appuyer sur une méthode simple : lire la consigne jusqu’au bout, planifier en 2 étapes, puis relire et corriger.","xp":10,"hp":30,"hpMax":30,"portrait":"diane.png","icon":"✨","questType":"methode"},{"id":"s6","name":"Dowan","cls":"Gardien","trait":"curiosité","role":null,"quest":"Quête : M’appuyer sur une méthode simple : lire la consigne jusqu’au bout, planifier en 2 étapes, puis relire et corriger.","xp":10,"hp":30,"hpMax":30,"portrait":"dowan.png","icon":"🛡️","questType":"methode"},{"id":"s7","name":"Enzo","cls":"Savant","trait":"persévérance","role":null,"quest":"Quête : M’appuyer sur une méthode simple : lire la consigne jusqu’au bout, planifier en 2 étapes, puis relire et corriger.","xp":10,"hp":30,"hpMax":30,"portrait":"enzo.png","icon":"🧠","questType":"methode"},{"id":"s8","name":"Ines","cls":"Messager","trait":"confiance","role":null,"quest":"Quête : M’appuyer sur une méthode simple : lire la consigne jusqu’au bout, planifier en 2 étapes, puis relire et corriger.","xp":10,"hp":30,"hpMax":30,"portrait":"ines.png","icon":"💬","questType":"methode"},{"id":"s9","name":"Jeff","cls":"Scribe","trait":"rigueur","role":null,"quest":"Quête : M’appuyer sur une méthode simple : lire la consigne jusqu’au bout, planifier en 2 étapes, puis relire et corriger.","xp":10,"hp":30,"hpMax":30,"portrait":"jeff.png","icon":"✒️","questType":"methode"},{"id":"s10","name":"Jules","cls":"Éclaireur","trait":"courage","role":null,"quest":"Quête : M’appuyer sur une méthode simple : lire la consigne jusqu’au bout, planifier en 2 étapes, puis relire et corriger.","xp":10,"hp":30,"hpMax":30,"portrait":"jules.png","icon":"✨","questType":"methode"},{"id":"s11","name":"Kelim","cls":"Gardien","trait":"curiosité","role":null,"quest":"Quête : M’appuyer sur une méthode simple : lire la consigne jusqu’au bout, planifier en 2 étapes, puis relire et corriger.","xp":10,"hp":30,"hpMax":30,"portrait":"kelim.png","icon":"🛡️","questType":"methode"},{"id":"s12","name":"Lena","cls":"Savant","trait":"persévérance","role":null,"quest":"Quête : M’appuyer sur une méthode simple : lire la consigne jusqu’au bout, planifier en 2 étapes, puis relire et corriger.","xp":10,"hp":30,"hpMax":30,"portrait":"lena.png","icon":"🧠","questType":"methode"},{"id":"s13","name":"Logan","cls":"Messager","trait":"confiance","role":null,"quest":"Quête : M’appuyer sur une méthode simple : lire la consigne jusqu’au bout, planifier en 2 étapes, puis relire et corriger.","xp":10,"hp":30,"hpMax":30,"portrait":"logan.png","icon":"💬","questType":"methode"},{"id":"s14","name":"Lola","cls":"Scribe","trait":"rigueur","role":null,"quest":"Quête : M’appuyer sur une méthode simple : lire la consigne jusqu’au bout, planifier en 2 étapes, puis relire et corriger.","xp":10,"hp":30,"hpMax":30,"portrait":"lola.png","icon":"✒️","questType":"methode"},{"id":"s15","name":"Lucas","cls":"Éclaireur","trait":"courage","role":null,"quest":"Quête : M’appuyer sur une méthode simple : lire la consigne jusqu’au bout, planifier en 2 étapes, puis relire et corriger.","xp":10,"hp":30,"hpMax":30,"portrait":"lucas.png","icon":"✨","questType":"methode"},{"id":"s16","name":"Maelys","cls":"Gardien","trait":"curiosité","role":null,"quest":"Quête : M’appuyer sur une méthode simple : lire la consigne jusqu’au bout, planifier en 2 étapes, puis relire et corriger.","xp":10,"hp":30,"hpMax":30,"portrait":"maelys.png","icon":"🛡️","questType":"methode"},{"id":"s17","name":"Max La","cls":"Savant","trait":"persévérance","role":null,"quest":"Quête : M’appuyer sur une méthode simple : lire la consigne jusqu’au bout, planifier en 2 étapes, puis relire et corriger.","xp":10,"hp":30,"hpMax":30,"portrait":"max_la.png","icon":"🧠","questType":"methode"},{"id":"s18","name":"Max Le","cls":"Messager","trait":"confiance","role":null,"quest":"Quête : M’appuyer sur une méthode simple : lire la consigne jusqu’au bout, planifier en 2 étapes, puis relire et corriger.","xp":10,"hp":30,"hpMax":30,"portrait":"max_le.png","icon":"💬","questType":"methode"},{"id":"s19","name":"Melinda","cls":"Scribe","trait":"rigueur","role":null,"quest":"Quête : M’appuyer sur une méthode simple : lire la consigne jusqu’au bout, planifier en 2 étapes, puis relire et corriger.","xp":10,"hp":30,"hpMax":30,"portrait":"melinda.png","icon":"✒️","questType":"methode"},{"id":"s20","name":"Nathanael","cls":"Éclaireur","trait":"courage","role":null,"quest":"Quête : M’appuyer sur une méthode simple : lire la consigne jusqu’au bout, planifier en 2 étapes, puis relire et corriger.","xp":10,"hp":30,"hpMax":30,"portrait":"nathanael.png","icon":"✨","questType":"methode"},{"id":"s21","name":"Raphael","cls":"Gardien","trait":"curiosité","role":null,"quest":"Quête : M’appuyer sur une méthode simple : lire la consigne jusqu’au bout, planifier en 2 étapes, puis relire et corriger.","xp":10,"hp":30,"hpMax":30,"portrait":"raphael.png","icon":"🛡️","questType":"methode"},{"id":"s22","name":"Thomas","cls":"Savant","trait":"persévérance","role":null,"quest":"Quête : M’appuyer sur une méthode simple : lire la consigne jusqu’au bout, planifier en 2 étapes, puis relire et corriger.","xp":10,"hp":30,"hpMax":30,"portrait":"thomas.png","icon":"🧠","questType":"methode"}],"louaneIntroDone":false,"quests":[{"id":"q1","title":"Le Parchemin de la Méthode","done":false,"reward":6,"desc":"Relire, corriger, améliorer un écrit."},{"id":"q2","title":"La Clef de la Confiance","done":false,"reward":6,"desc":"Oser une participation (même courte)."},{"id":"q3","title":"Le Bouclier de l’Attention","done":false,"reward":6,"desc":"Tenir une phase de travail sans distraction."},{"id":"qA1","title":"🗺️ Cartographes du Royaume","done":false,"reward":5,"desc":"Inventer un lieu d’Orthésia (texte 8–15 lignes OU dessin légendé). Validation : publication dans 📜 Archives → « Lieux & Cartes ». Récompense : +5 XP classe + succès « Bâtisseurs du monde »."},{"id":"qA2","title":"✍️ Chroniqueurs officiels","done":true,"reward":10,"desc":"Écrire une chronique dans l’univers d’Orthésia (début / événement / fin). Validation : publication dans 📜 Archives → « Chroniques ». Récompense : +10 XP classe + succès « Plume d’Or »."},{"id":"qA3","title":"⚔️ Mémoires de combat","done":false,"reward":0,"desc":"Raconter un combat symbolique vécu en classe (rédaction, oral, évaluation…). Validation : publication dans 📜 Archives → « Combats & Boss ». Récompense : boss affaibli + succès « Victoire racontée »."}],"boss":{"id":"boss_t1","name":"Le Grand Brouillard du Trimestre","hp":120,"hpMax":120,"weakness":"methode","status":"active","log":["Le brouillard s’épaissit… mais l’équipe avance.","Une phrase bien construite dissipe une ombre."],"maxHp":120},"achievements":[{"id":"g17685073443236d2b1708d194f8","title":"🔥 Silence d’or — 10 min de concentration","desc":"Objectif : 10 minutes de travail en silence (sans bavardage, sans distraction).","done":false},{"id":"g1768507344323832809ffdf8c9","title":"🧠 Détectives du texte — indices & implicite","desc":"Objectif : repérer les indices, comprendre l’implicite, justifier avec le texte.","done":false},{"id":"g17685073443234e385140767128","title":"🎯 Contrôle “mode boss” — notions maîtrisées","desc":"Objectif : réussir un contrôle/défi de fin de séquence avec une très bonne maîtrise.","done":false},{"id":"g1768507344323228703df2e7bf","title":"🗣️ Oral héroïque — prise de parole maîtrisée","desc":"Objectif : parler clairement, fort, articuler, regarder le public, respecter le temps.","done":false},{"id":"g17685073443238a95b3cc55ae08","title":"🧾 Copie parfaite — soin & zéro erreur","desc":"Objectif : copie très soignée (présentation + orthographe) et consignes respectées.","done":false},{"id":"g176850883100225a68631d483f8","title":"📚 Mémoire du Royaume — 5 productions publiées","desc":"Condition : 5 productions validées et publiées dans 📜 Archives (texte ou dessin).\nEffet : +10 XP classe + 1 ‘avantage narration’ (le professeur raconte un nouvel épisode du lore ou débloque un indice spécial).","done":false},{"id":"g17685088310038b95a8c6e3cd3","title":"🖋️ Plume d’Or — chronique mise à l’honneur","desc":"Condition : 1 texte particulièrement réussi (style, imagination, clarté, structure) choisi par le professeur et mis en avant dans les Archives.\nEffet : le texte passe en ‘Chronique officielle’ + +10 XP classe.","done":false,"unlocked":true,"date":"16/01/2026 18:02"},{"id":"g1768508831003fbdad8abd342c8","title":"🎨 Hérauts visuels — 3 dessins/blasons publiés","desc":"Condition : 3 dessins ou blasons validés et publiés dans la Galerie.\nEffet : un dessin devient un élément officiel du royaume (emblème d’un lieu, blason d’une faction, sceau d’un boss…).","done":false},{"id":"g1768508831003b30e49868203e","title":"🏰 Archives vivantes — 1 production par rubrique","desc":"Condition : au moins une production publiée dans chaque rubrique (Lieux & Cartes / Combats & Boss / Secrets / Chroniques / Galerie).\nEffet : succès permanent + message narratif spécial du professeur.","done":false}],"periods":[{"id":"jan","label":"Janvier","goal":"Reprendre confiance","boss":"Le Doute persistant","teamXp":0,"questsDone":1,"notes":""},{"id":"feb","label":"Février","goal":"Se concentrer","boss":"La Dispersion","teamXp":0,"questsDone":1,"notes":""},{"id":"mar","label":"Mars","goal":"Oser participer","boss":"La Peur de se tromper","teamXp":0,"questsDone":1,"notes":""},{"id":"apr","label":"Avril","goal":"Tenir l’effort","boss":"La Fatigue","teamXp":0,"questsDone":1,"notes":""},{"id":"may","label":"Mai","goal":"Être rigoureux","boss":"La Précipitation","teamXp":0,"questsDone":1,"notes":""},{"id":"jun","label":"Juin","goal":"Boss final","boss":"L’Ombre d’Orthésia","teamXp":0,"questsDone":1,"notes":""}],"meta":{"updatedAt":"16/01/2026 18:04","finalShown":false},"battle":{"enemy":{"id":"disp","name":"La Dispersion","hp":30,"atk":7,"msg":"Elle disperse l’attention et le courage."},"enemyHp":30,"turnIndex":0,"shield":0,"log":["\u003cb>Un obstacle apparaît :\u003c/b> La Dispersion.","Votre classe respire… et se prépare."]},"rolesActive":[],"rolesHistory":[],"collectiveGoals":[{"id":"g17685073443236d2b1708d194f8","title":"🔥 Silence d’or — 10 min de concentration","desc":"Objectif : 10 minutes de travail en silence (sans bavardage, sans distraction).","done":false,"createdAt":"2026-01-15T20:02:24.323Z","doneAt":null},{"id":"g1768507344323832809ffdf8c9","title":"🧠 Détectives du texte — indices & implicite","desc":"Objectif : repérer les indices, comprendre l’implicite, justifier avec le texte.","done":false,"createdAt":"2026-01-15T20:02:24.323Z","doneAt":null},{"id":"g17685073443234e385140767128","title":"🎯 Contrôle “mode boss” — notions maîtrisées","desc":"Objectif : réussir un contrôle/défi de fin de séquence avec une très bonne maîtrise.","done":false,"createdAt":"2026-01-15T20:02:24.323Z","doneAt":null},{"id":"g1768507344323228703df2e7bf","title":"🗣️ Oral héroïque — prise de parole maîtrisée","desc":"Objectif : parler clairement, fort, articuler, regarder le public, respecter le temps.","done":false,"createdAt":"2026-01-15T20:02:24.323Z","doneAt":null},{"id":"g17685073443238a95b3cc55ae08","title":"🧾 Copie parfaite — soin & zéro erreur","desc":"Objectif : copie très soignée (présentation + orthographe) et consignes respectées.","done":false,"createdAt":"2026-01-15T20:02:24.323Z","doneAt":null},{"id":"g176850883100225a68631d483f8","title":"📚 Mémoire du Royaume — 5 productions publiées","desc":"Condition : 5 productions validées et publiées dans 📜 Archives (texte ou dessin).\nEffet : +10 XP classe + 1 ‘avantage narration’ (le professeur raconte un nouvel épisode du lore ou débloque un indice spécial).","done":false,"createdAt":"2026-01-15T20:27:11.002Z","doneAt":null},{"id":"g17685088310038b95a8c6e3cd3","title":"🖋️ Plume d’Or — chronique mise à l’honneur","desc":"Condition : 1 texte particulièrement réussi (style, imagination, clarté, structure) choisi par le professeur et mis en avant dans les Archives.\nEffet : le texte passe en ‘Chronique officielle’ + +10 XP classe.","done":false,"createdAt":"2026-01-15T20:27:11.003Z","doneAt":null},{"id":"g1768508831003fbdad8abd342c8","title":"🎨 Hérauts visuels — 3 dessins/blasons publiés","desc":"Condition : 3 dessins ou blasons validés et publiés dans la Galerie.\nEffet : un dessin devient un élément officiel du royaume (emblème d’un lieu, blason d’une faction, sceau d’un boss…).","done":false,"createdAt":"2026-01-15T20:27:11.003Z","doneAt":null},{"id":"g1768508831003b30e49868203e","title":"🏰 Archives vivantes — 1 production par rubrique","desc":"Condition : au moins une production publiée dans chaque rubrique (Lieux & Cartes / Combats & Boss / Secrets / Chroniques / Galerie).\nEffet : succès permanent + message narratif spécial du professeur.","done":false,"createdAt":"2026-01-15T20:27:11.003Z","doneAt":null}],"badges":{},"collectivePoints":0,"teamXp":0,"classSlug":"","className":"","announcements":[]}</script>
+<script type="application/json" id="ZONES">[{"id":"plaine","name":"Plaine de la Compréhension","desc":"Lire, comprendre, repérer l'essentiel.","x":8,"y":15},{"id":"foret","name":"Forêt de l’Écriture","desc":"Écrire, structurer, améliorer.","x":40,"y":44},{"id":"cite","name":"Cité de l’Oral","desc":"Prendre la parole avec confiance.","x":74,"y":14},{"id":"mont","name":"Montagne de la Méthode","desc":"S'organiser, relire, progresser.","x":18,"y":64},{"id":"sanct","name":"Sanctuaire de la Confiance","desc":"Oser, persévérer, grandir.","x":74,"y":64}]</script>
+
+<script>
+"use strict";
+function getJson(id){ try{ return JSON.parse(document.getElementById(id).textContent || "{}"); } catch(e){ return {}; } }
+const meta = getJson("META");
+const stateRaw = getJson("STATE");
+const zones = getJson("ZONES");
+
+if(meta.watermarkOn){ document.body.classList.add("wm"); document.body.dataset.wm = meta.watermark || ""; }
+document.getElementById("pageTitle").textContent = meta.title || "";
+document.getElementById("pageSubtitle").textContent = meta.subtitle || "";
+const upd = document.getElementById("updatedAt");
+if(meta.stampOn){ upd.style.display = "block"; upd.textContent = "Mise à jour du " + (meta.updatedAt || ""); }
+document.getElementById("footerText").textContent = meta.footer || "";
+
+const state = (function(s){
+  const safe = (s && typeof s==="object") ? s : {};
+  safe.zoneId = (typeof safe.zoneId==="string") ? safe.zoneId : (zones[0] ? zones[0].id : "");
+  safe.party = Array.isArray(safe.party) ? safe.party : [];
+  safe.quests = Array.isArray(safe.quests) ? safe.quests : [];
+  safe.boss = (safe.boss && typeof safe.boss==="object") ? safe.boss : null;
+  safe.achievements = Array.isArray(safe.achievements) ? safe.achievements : [];
+  safe.periods = Array.isArray(safe.periods) ? safe.periods : [];
+  safe.rolesActive = Array.isArray(safe.rolesActive) ? safe.rolesActive : [];
+  safe.announcements = Array.isArray(safe.announcements) ? safe.announcements : [];
+  return safe;
+})(stateRaw);
+
+function levelFromXP(xp){ xp=Number(xp)||0; if(xp<10)return 1; if(xp<22)return 2; if(xp<38)return 3; if(xp<58)return 4; return 5; }
+function xpToNext(level){ const t=[0,10,22,38,58,999]; return t[level]||999; }
+
+function updatePills(){
+  const zone = zones.find(z=>z.id===state.zoneId);
+  const teamCount = state.party.length;
+  const totalXP = state.party.reduce((a,p)=>a+(Number(p.xp)||0),0);
+  document.getElementById("pillChapter").textContent = "Zone : " + (zone?zone.name:"—");
+  document.getElementById("pillTeam").textContent = "Équipe : " + teamCount + " héros";
+  document.getElementById("pillXP").textContent = "XP total : " + totalXP;
+}
+
+const viewEl = document.getElementById("view");
+const navBtns = Array.from(document.querySelectorAll(".nav button[data-view]"));
+function setView(v){
+  navBtns.forEach(b=>b.classList.toggle("active", b.dataset.view===v));
+  render(v);
+}
+navBtns.forEach(b=>b.addEventListener("click", (e)=>{ e.preventDefault(); setView(b.dataset.view); }));
+
+function render(v){
+  updatePills();
+  if(v==="map") return renderMap();
+  if(v==="roster") return renderRoster();
+  if(v==="quests") return renderQuests();
+  if(v==="progress") return renderProgress();
+}
+
+function renderMap(){
+  viewEl.textContent = "";
+  const zone = zones.find(z=>z.id===state.zoneId);
+
+  const h=document.createElement("h2"); h.style.margin="0 0 8px"; h.style.fontSize="14px"; h.textContent="🗺️ Carte (consultation)"; viewEl.appendChild(h);
+  const p=document.createElement("p"); p.className="muted"; p.textContent="Zone actuelle mise à jour par le professeur."; viewEl.appendChild(p);
+
+  const map=document.createElement("div"); map.className="map";
+  const cam=document.createElement("div"); cam.className="mapCam"; map.appendChild(cam);
+  viewEl.appendChild(map);
+
+  zones.forEach(z=>{
+    const n=document.createElement("div");
+    n.className="node" + (z.id===state.zoneId ? " selected" : "");
+    n.style.left = z.x + "%";
+    n.style.top  = z.y + "%";
+    const t=document.createElement("h3"); t.textContent=z.name; n.appendChild(t);
+    const s=document.createElement("small"); s.textContent=z.desc; n.appendChild(s);
+    const spacer=document.createElement("div"); spacer.style.height="8px"; n.appendChild(spacer);
+    const b=document.createElement("span"); b.className="badge"; b.textContent = (z.id===state.zoneId ? "Vous êtes ici" : "Zone"); n.appendChild(b);
+    cam.appendChild(n);
+  });
+
+  const hr=document.createElement("div"); hr.className="hr"; viewEl.appendChild(hr);
+  const mini=document.createElement("p"); mini.className="mini";
+  mini.textContent = "Zone actuelle : " + (zone?zone.name:"—") + " — " + (zone?zone.desc:"");
+  viewEl.appendChild(mini);
+}
+
+function renderRoster(){
+  viewEl.textContent="";
+  const h=document.createElement("h2"); h.style.margin="0 0 8px"; h.style.fontSize="14px"; h.textContent="👥 Équipe (consultation)"; viewEl.appendChild(h);
+  const p=document.createElement("p"); p.className="muted"; p.textContent="Progression visible. Aucun bouton d’action ici."; viewEl.appendChild(p);
+
+  const list=document.createElement("div"); list.className="list"; viewEl.appendChild(list);
+  if(state.party.length===0){
+    const d=document.createElement("div"); d.className="char";
+    const hh=document.createElement("h3"); hh.style.margin="0"; hh.textContent="Aucune donnée"; d.appendChild(hh);
+    const tg=document.createElement("div"); tg.className="tag"; tg.textContent="Le professeur n’a pas encore publié."; d.appendChild(tg);
+    list.appendChild(d); return;
+  }
+
+  state.party.forEach(pers=>{
+    const xp = Number(pers.xp)||0;
+    const lvl = levelFromXP(xp);
+    const next = xpToNext(lvl+1);
+    const prev = xpToNext(lvl);
+    const span = Math.max(1, next-prev);
+    const prog = Math.min(100, Math.round(((xp-prev)/span)*100));
+
+    const card=document.createElement("div"); card.className="char";
+    const top=document.createElement("div"); top.className="charTop"; card.appendChild(top);
+
+    const left=document.createElement("div");
+    left.style.display="flex"; left.style.gap="10px"; left.style.alignItems="center";
+    top.appendChild(left);
+
+    const av=document.createElement("div"); av.className="avatarBox"; left.appendChild(av);
+    const icon = (pers.icon || "✨");
+    if(pers.portrait){
+      const img=new Image();
+      img.src = pers.portrait;
+      img.alt = pers.name || "";
+      img.onerror = ()=>{ av.textContent = icon; av.classList.add("avatarFallback"); };
+      av.appendChild(img);
+    }else{
+      av.textContent = icon;
+      av.classList.add("avatarFallback");
+    }
+
+    const txt=document.createElement("div"); left.appendChild(txt);
+    const nm=document.createElement("h3"); nm.style.margin="0"; nm.textContent=(pers.name||"—"); txt.appendChild(nm);
+    const tg=document.createElement("div"); tg.className="tag"; tg.textContent=(pers.cls||"—")+" • Qualité : "+(pers.trait||"—");
+    const role = (state.rolesActive||[]).find(r=>r.studentId && pers.id && r.studentId===pers.id);
+    if(role){
+      const rb=document.createElement("div");
+      rb.className="tag";
+      rb.style.marginTop="4px";
+      rb.textContent = "🧙 Rôle : " + (role.roleLabel||role.roleId||"") + (role.endAt ? (" (jusqu’au " + String(role.endAt).slice(0,10) + ")") : "");
+      txt.appendChild(rb);
+    } txt.appendChild(tg);
+
+    const right=document.createElement("div"); right.className="tag"; right.textContent="Niv. "+lvl; top.appendChild(right);
+
+    const bar=document.createElement("div"); bar.className="bar barXp";
+    const fill=document.createElement("div"); fill.style.width = prog + "%";
+    bar.appendChild(fill); card.appendChild(bar);
+
+    const stats=document.createElement("div"); stats.className="stats";
+    stats.innerHTML = "<span>XP : <b>"+xp+"</b></span><span>Prochain niv. : <b>"+(next===999 ? "—" : next)+"</b></span>";
+    card.appendChild(stats);
+
+    if(pers.quest){
+      const q=document.createElement("div"); q.className="mini";
+      const b=document.createElement("b"); b.textContent = pers.quest;
+      q.appendChild(b); card.appendChild(q);
+    }
+    list.appendChild(card);
+  });
+}
+
+function renderQuests(){
+  viewEl.textContent="";
+  const h=document.createElement("h2"); h.style.margin="0 0 8px"; h.style.fontSize="14px"; h.textContent="📜 Quêtes (consultation)"; viewEl.appendChild(h);
+  const p=document.createElement("p"); p.className="muted"; p.textContent="État : à faire / accomplie."; viewEl.appendChild(p);
+
+  if(state.quests.length===0){
+    const d=document.createElement("div"); d.className="char";
+    const hh=document.createElement("h3"); hh.style.margin="0"; hh.textContent="Aucune quête"; d.appendChild(hh);
+    const tg=document.createElement("div"); tg.className="tag"; tg.textContent="Le professeur n’a pas encore publié."; d.appendChild(tg);
+    viewEl.appendChild(d); return;
+  }
+
+  state.quests.forEach(q=>{
+    const card=document.createElement("div"); card.className="char";
+    const top=document.createElement("div"); top.className="charTop"; card.appendChild(top);
+
+    const left=document.createElement("div"); top.appendChild(left);
+    const t=document.createElement("h3"); t.style.margin="0"; t.textContent=(q.title||"Quête"); left.appendChild(t);
+    const d=document.createElement("div"); d.className="tag"; d.textContent=(q.desc||""); left.appendChild(d);
+
+    const r=document.createElement("div"); r.className="tag";
+    r.textContent = "Récompense : " + (Number(q.reward)||0) + " XP";
+    top.appendChild(r);
+
+    const hr=document.createElement("div"); hr.className="hr"; card.appendChild(hr);
+    const st=document.createElement("div"); st.className="tag"; st.textContent = (q.done ? "✅ Accomplie" : "☐ À faire");
+    card.appendChild(st);
+
+    viewEl.appendChild(card);
+  });
+}
+
+function renderProgress(){
+  viewEl.textContent="";
+  const h=document.createElement("h2"); h.style.margin="0 0 8px"; h.style.fontSize="14px"; h.textContent="🏆 Progrès (consultation)"; viewEl.appendChild(h);
+  const p=document.createElement("p"); p.className="muted"; p.textContent="Boss collectif, succès et progression par période."; viewEl.appendChild(p);
+  if(state.announcements && state.announcements.length){
+    const last = state.announcements[state.announcements.length-1];
+    const box=document.createElement("div"); box.className="char";
+    const hA=document.createElement("h3"); hA.style.margin="0 0 6px"; hA.textContent="📣 Message du professeur";
+    box.appendChild(hA);
+    const msg=document.createElement("div"); msg.className="tag"; msg.textContent = last.text || "";
+    box.appendChild(msg);
+    viewEl.appendChild(box);
+    const hrA=document.createElement("div"); hrA.className="hr"; viewEl.appendChild(hrA);
+  }
+
+
+  
+  const rh=document.createElement("h3"); rh.style.margin="14px 0 6px"; rh.textContent="🧙 Rôles en cours";
+  viewEl.appendChild(rh);
+  if((state.rolesActive||[]).length===0){
+    const d=document.createElement("div"); d.className="char"; d.textContent="Aucun rôle actif publié."; viewEl.appendChild(d);
+  } else {
+    (state.rolesActive||[]).forEach(r=>{
+      const item=document.createElement("div"); item.className="char";
+      const top=document.createElement("div"); top.className="charTop"; item.appendChild(top);
+      const left=document.createElement("div"); top.appendChild(left);
+      const tt=document.createElement("h3"); tt.style.margin="0"; tt.textContent = (r.studentName||"Élève"); left.appendChild(tt);
+      const dd=document.createElement("div"); dd.className="tag"; dd.textContent = (r.roleLabel||r.roleId||"Rôle"); left.appendChild(dd);
+      const right=document.createElement("div"); right.className="tag"; right.textContent = r.endAt ? ("jusqu’au " + String(r.endAt).slice(0,10)) : ""; top.appendChild(right);
+      viewEl.appendChild(item);
+    });
+  }
+
+// Boss
+  if(state.boss){
+    const hp = Number(state.boss.hp);
+    const hpMax = Math.max(1, Number(state.boss.hpMax || state.boss.hp));
+    const pct = Math.max(0, Math.min(100, Math.round((hp / hpMax) * 100)));
+
+    const box=document.createElement("div"); box.className="char";
+    const t=document.createElement("h3"); t.style.margin="0 0 6px"; t.textContent = "👹 " + (state.boss.name || "Boss");
+    box.appendChild(t);
+
+    const wrap=document.createElement("div"); wrap.className="hpWrap";
+    const fill=document.createElement("div"); fill.className="hpFill"; fill.style.width = pct + "%";
+    wrap.appendChild(fill); box.appendChild(wrap);
+
+    const lab=document.createElement("div"); lab.className="hpLabel";
+    lab.textContent = "PV : " + (state.boss.hp ?? "—") + " / " + (state.boss.hpMax ?? "—") + " (" + pct + "%)";
+    box.appendChild(lab);
+
+    viewEl.appendChild(box);
+  } else {
+    const d=document.createElement("div"); d.className="char"; d.textContent="Boss : non publié."; viewEl.appendChild(d);
+  }
+
+  const hr1=document.createElement("div"); hr1.className="hr"; viewEl.appendChild(hr1);
+
+  // Succès
+  const ah=document.createElement("h3"); ah.style.margin="0 0 6px"; ah.textContent="🏅 Succès collectifs";
+  const succList = (Array.isArray(state.collectiveGoals) && state.collectiveGoals.length)
+    ? state.collectiveGoals.map(g=>({title:g.title||"Objectif", desc:g.desc||"", done:!!g.done}))
+    : (Array.isArray(state.achievements)? state.achievements : []);
+  viewEl.appendChild(ah);
+
+  if(succList.length===0){
+    const d=document.createElement("div"); d.className="char"; d.textContent="Aucun succès publié."; viewEl.appendChild(d);
+  } else {
+    succList.forEach(a=>{
+      const item=document.createElement("div"); item.className="char";
+      const top=document.createElement("div"); top.className="charTop"; item.appendChild(top);
+
+      const left=document.createElement("div"); top.appendChild(left);
+      const tt=document.createElement("h3"); tt.style.margin="0"; tt.textContent = a.title || "Succès"; left.appendChild(tt);
+      const dd=document.createElement("div"); dd.className="tag"; dd.textContent = a.desc || ""; left.appendChild(dd);
+
+      const badge=document.createElement("div"); badge.className="tag";
+      badge.innerHTML = a.unlocked ? '<span class="pillOk">Débloqué</span>' : '<span class="pillTodo">À débloquer</span>';
+      top.appendChild(badge);
+
+      viewEl.appendChild(item);
+    });
+  }
+
+  const hr2=document.createElement("div"); hr2.className="hr"; viewEl.appendChild(hr2);
+
+  // Périodes
+  const ph=document.createElement("h3"); ph.style.margin="0 0 6px"; ph.textContent="📅 Périodes";
+  viewEl.appendChild(ph);
+
+  if(state.periods.length===0){
+    const d=document.createElement("div"); d.className="char"; d.textContent="Aucune période publiée."; viewEl.appendChild(d);
+  } else {
+    const table=document.createElement("table"); table.className="table";
+    table.innerHTML = "<thead><tr><th>Période</th><th>XP équipe</th><th>Quêtes</th><th>Note</th></tr></thead>";
+    const tb=document.createElement("tbody");
+
+    state.periods.forEach(pr=>{
+      const tr=document.createElement("tr");
+      const td1=document.createElement("td");
+      td1.textContent = String(pr.label || pr.id || "—") + (pr.dateRange ? " (" + pr.dateRange + ")" : "");
+      const td2=document.createElement("td"); td2.textContent = String(pr.teamXp ?? "—");
+      const td3=document.createElement("td"); td3.textContent = String(pr.questsDone ?? "—");
+      const td4=document.createElement("td"); td4.textContent = String(pr.notes ?? "");
+      tr.append(td1, td2, td3, td4);
+      tb.appendChild(tr);
+    });
+
+    table.appendChild(tb);
+    viewEl.appendChild(table);
+  }
+}
+
+setView("map");
+</script>
+</body>
+</html>
