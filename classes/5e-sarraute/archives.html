@@ -1,0 +1,357 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>📜 Archives d’Orthésia — 5e Sarraute</title>
+  
+<style>
+    :root{
+      --bg1:#070b14;
+      --bg2:#0b1330;
+      --card:rgba(255,255,255,.06);
+      --card2:rgba(255,255,255,.09);
+      --line:rgba(255,255,255,.12);
+      --txt:rgba(255,255,255,.92);
+      --muted:rgba(255,255,255,.72);
+      --glow:rgba(140,170,255,.28);
+      --accent:rgba(255,215,120,.22);
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0; min-height:100vh;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      color:var(--txt);
+      background:
+        radial-gradient(900px 600px at 20% 15%, rgba(140,170,255,.18), transparent 60%),
+        radial-gradient(900px 600px at 80% 40%, rgba(120,90,200,.14), transparent 65%),
+        linear-gradient(180deg, var(--bg2), var(--bg1));
+      padding:24px;
+    }
+    .wrap{width:min(1050px, 100%); margin:0 auto}
+    .topbar{
+      display:flex; gap:12px; align-items:center; justify-content:space-between;
+      padding:16px 18px;
+      border:1px solid var(--line);
+      border-radius:18px;
+      background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.04));
+      box-shadow: 0 20px 60px rgba(0,0,0,.45), inset 0 0 0 1px rgba(255,255,255,.03);
+      backdrop-filter: blur(10px);
+    }
+    h1{margin:0; font-size:22px; letter-spacing:.2px; display:flex; gap:10px; align-items:center;}
+    .sub{margin:6px 0 0; color:var(--muted); font-size:13px; line-height:1.35}
+    .pill{
+      font-size:12px; padding:7px 10px; border-radius:999px;
+      border:1px solid rgba(255,255,255,.16);
+      background: rgba(0,0,0,.20);
+      color:rgba(255,255,255,.85);
+      white-space:nowrap;
+    }
+    .btn{
+      display:inline-flex; align-items:center; justify-content:center; gap:8px;
+      padding:10px 12px;
+      border-radius:12px;
+      border:1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255,255,255,.09), rgba(255,255,255,.05));
+      color:var(--txt);
+      text-decoration:none;
+      cursor:pointer;
+    }
+    .btn:hover{border-color: rgba(170,190,255,.32);}
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap:12px;
+      margin-top:14px;
+    }
+    .card{
+      border:1px solid var(--line);
+      border-radius:18px;
+      background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.04));
+      box-shadow: 0 12px 30px rgba(0,0,0,.35);
+      padding:16px 16px 14px;
+      position:relative;
+      overflow:hidden;
+    }
+    .card::before{
+      content:"";
+      position:absolute; inset:-40%;
+      background: radial-gradient(circle at 30% 30%, var(--glow), transparent 55%);
+      opacity:.35;
+      transform: rotate(-6deg);
+      pointer-events:none;
+    }
+    .card h2{margin:0 0 8px; font-size:16px;}
+    .card p{margin:0; color:var(--muted); font-size:13px; line-height:1.45;}
+    .rulebox{
+      margin-top:12px;
+      border:1px dashed rgba(255,255,255,.22);
+      background: rgba(255,215,120,.06);
+      border-radius:14px;
+      padding:10px 12px;
+    }
+    .rulebox ul{margin:8px 0 0 18px; color:rgba(255,255,255,.8); font-size:13px; line-height:1.45}
+    .section{
+      margin-top:12px;
+      border-top:1px solid rgba(255,255,255,.12);
+      padding-top:12px;
+    }
+    .entry{
+      margin-top:10px;
+      border:1px solid rgba(255,255,255,.12);
+      border-radius:14px;
+      background: rgba(0,0,0,.18);
+      padding:12px;
+    }
+    .entry h3{margin:0 0 6px; font-size:14px;}
+    .meta{color:rgba(255,255,255,.6); font-size:12px; margin-bottom:8px}
+    .entry p{margin:0; color:rgba(255,255,255,.82); white-space:pre-wrap;}
+    .gallery{
+      display:grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap:10px;
+      margin-top:10px;
+    }
+    .imgcard{
+      border:1px solid rgba(255,255,255,.12);
+      border-radius:14px;
+      overflow:hidden;
+      background: rgba(0,0,0,.18);
+    }
+    .imgcard .ph{
+      width:100%; height:160px; display:flex; align-items:center; justify-content:center;
+      background: rgba(255,255,255,.04);
+      color: rgba(255,255,255,.55);
+      font-size:12px;
+    }
+    .cap{padding:8px 10px; color:rgba(255,255,255,.78); font-size:12px; line-height:1.35}
+    .footer{
+      margin-top:14px;
+      color:rgba(255,255,255,.55);
+      font-size:12px;
+      text-align:center;
+    }
+    @media (max-width: 900px){
+      .grid{grid-template-columns:1fr}
+      .gallery{grid-template-columns:1fr}
+      .imgcard .ph{height:220px}
+    }
+
+/* ===== Entrée Grimoire : encre claire + lettrine ===== */
+.entry--grimoire{
+  padding: 20px 22px 18px;
+  border-radius: 18px;
+  border: 1px solid rgba(255,255,255,.14);
+  background:
+    radial-gradient(800px 500px at 30% 20%, rgba(180,200,255,.12), transparent 60%),
+    linear-gradient(180deg, rgba(20,30,60,.85), rgba(8,12,25,.9));
+  box-shadow: 0 22px 55px rgba(0,0,0,.45);
+}
+.entry--grimoire .meta{ font-size: 12px; opacity: .75; margin-bottom: 6px; }
+.entry--grimoire .entry-title{
+  margin: 0 0 12px 0;
+  font-size: 19px;
+  letter-spacing: .4px;
+  color: #f2f5ff;
+}
+.entry--grimoire .story{ font-size: 14.5px; line-height: 1.65; color: rgba(235,240,255,.95); }
+.entry--grimoire .story p{ margin: 0 0 12px 0; }
+.entry--grimoire .story.lettrine p:first-child::first-letter{
+  float: left;
+  font-size: 3.2em;
+  line-height: 1;
+  padding: 6px 8px 0 0;
+  font-weight: 700;
+  color: #e6ecff;
+  text-shadow:
+    0 0 6px rgba(140,170,255,.35),
+    0 2px 4px rgba(0,0,0,.4);
+}
+.entry--grimoire .story p:last-child{ margin-bottom: 0; }
+
+/* ===== Section Quêtes & Succès ===== */
+.linkbox{
+  margin-top:12px;
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:14px;
+  background: rgba(0,0,0,.16);
+  padding:12px;
+}
+.linkbox h3{margin:0 0 6px; font-size:14px}
+.linkbox p{margin:0; color:rgba(255,255,255,.78); font-size:13px; line-height:1.45}
+.linklist{margin:10px 0 0 18px; color:rgba(255,255,255,.85); font-size:13px; line-height:1.5}
+.tag{
+  display:inline-block; margin-right:6px; margin-top:6px;
+  font-size:12px; padding:4px 8px; border-radius:999px;
+  border:1px solid rgba(255,255,255,.14);
+  background: rgba(255,215,120,.08);
+  color: rgba(255,255,255,.86);
+}
+
+</style>
+
+</head>
+
+<body>
+  <main class="wrap">
+    <header class="topbar">
+      <div>
+        <h1>📜 Archives d’Orthésia — 5e Sarraute</h1>
+        <p class="sub">Chroniques, légendes, cartes et dessins : ici, la classe conserve la mémoire des créations.</p>
+      </div>
+      <div style="display:flex; gap:10px; align-items:center;">
+        <span class="pill">✨ Lore de la classe</span>
+        <a class="btn" href="orthesia_view.html">↩️ Retour à la classe</a>
+      </div>
+    </header>
+
+    <section class="grid">
+      <div class="card">
+        <h2>📌 À quoi servent ces Archives ?</h2>
+        <p>
+          Les Archives rassemblent des textes et des dessins produits en classe. Ce ne sont pas des “devoirs” :
+          ce sont des <strong>traces officielles</strong> du monde d’Orthésia.
+        </p>
+
+        <div class="rulebox">
+          <strong>Règles des Archives</strong>
+          <ul>
+            <li>On respecte les auteurs et le travail des autres.</li>
+            <li>Pas de moqueries : on valorise la créativité.</li>
+            <li>Les publications sont validées par le professeur.</li>
+            <li>Crédit : <strong>5e Sarraute</strong> (pas de noms d’élèves).</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>🧭 Rubriques</h2>
+        <p>Où classer une production ?</p>
+        <div class="section">
+          <p>🗺️ <strong>Lieux & Cartes</strong> — descriptions, territoires, cartes imaginées</p>
+          <p>⚔️ <strong>Combats & Boss</strong> — récits d’épreuves et défis collectifs</p>
+          <p>🧠 <strong>Secrets du royaume</strong> — règles, objets, sorts, énigmes</p>
+          <p>✍️ <strong>Chroniques</strong> — récits complets (10–20 lignes)</p>
+          <p>🎨 <strong>Galerie</strong> — dessins et blasons</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="card" style="margin-top:12px">
+      <h2>🧭 Archives → Quêtes & Succès</h2>
+      <p>Dans Orthésia, une production publiée dans les Archives peut <strong>valider une quête</strong> et <strong>débloquer un succès</strong>.</p>
+
+      <div class="linkbox">
+        <h3>🧭 1) Lien Archives → Quêtes</h3>
+        <p><strong>Principe :</strong> une quête est validée quand une création enrichit le monde d’Orthésia et est publiée ici (rubrique indiquée).</p>
+        <ul class="linklist">
+          <li><strong>🗺️ Cartographes du Royaume</strong> — Inventer un lieu (texte 8–15 lignes OU dessin légendé). <span class="tag">Validation : 📜 Archives → Lieux &amp; Cartes</span> <span class="tag">Récompense : +5 XP classe</span> <span class="tag">Succès : Bâtisseurs du monde</span></li>
+          <li><strong>✍️ Chroniqueurs officiels</strong> — Écrire un récit structuré (début / événement / fin). <span class="tag">Validation : 📜 Archives → Chroniques</span> <span class="tag">Récompense : +10 XP classe</span> <span class="tag">Succès : Plume d’Or</span></li>
+          <li><strong>⚔️ Mémoires de combat</strong> — Raconter un “combat symbolique” vécu en classe (rédaction, oral, évaluation…). <span class="tag">Validation : 📜 Archives → Combats &amp; Boss</span> <span class="tag">Récompense : boss affaibli</span> <span class="tag">Succès : Victoire racontée</span></li>
+        </ul>
+      </div>
+
+      <div class="linkbox">
+        <h3>🏆 2) Lien Archives → Succès</h3>
+        <p>Les succès valorisent ce qui est publié : la classe construit un vrai “lore” collectif.</p>
+        <ul class="linklist">
+          <li><strong>📚 Mémoire du Royaume</strong> — 5 productions publiées. <span class="tag">Effet : +10 XP classe</span> <span class="tag">Bonus : 1 “avantage narration”</span></li>
+          <li><strong>🖋️ Plume d’Or</strong> — Un texte particulièrement réussi (style, imagination, clarté). <span class="tag">Effet : mise en avant</span> <span class="tag">Badge côté élèves</span></li>
+          <li><strong>🎨 Hérauts visuels</strong> — 3 dessins / blasons publiés. <span class="tag">Effet : devient “officiel”</span></li>
+          <li><strong>🏰 Archives vivantes</strong> — Au moins 1 production dans chaque rubrique. <span class="tag">Effet : succès permanent</span> <span class="tag">Message narratif spécial</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="card" style="margin-top:12px">
+ 
+     
+
+      <div class="entry entry--grimoire">
+        <div class="meta">Crédit : 5e Sarraute • Rubrique : Chroniques</div>
+        <h3 class="entry-title">🕯️ Modèle — Chroniques (lettrine)</h3>
+        <div class="story lettrine">
+          <p>Colle ici une chronique (10–20 lignes). Commence par une phrase forte, puis raconte un événement dans Orthésia.</p>
+          <p>💡 Astuce : 1) Présenter le lieu/personnage. 2) Problème / défi. 3) Solution / morale.</p>
+        </div>
+      </div>
+     <h2>✍️ Chroniques</h2>     
+
+<div class="meta">Crédit : Loyan• Rubrique : Chroniques </div>
+
+<h3>Orthésia et le cimetière hanté. <h3>
+
+
+
+A Orthésia, après le carnage du monstre, les villageois entendirent des hurlements. Paniqués, ils se cachèrent. Sauf un qui se décida à aller au cimetière. Il repartit en courant et hurlant : 
+« Mais c’est quoi cette chose ?! Haaaaaaaa ! Des chevaliers qui volent ! Ce sont…Ce sont…Ce sont des fan…fan…fan…fantômes ! ».</p>
+Ce qu’il ne savait pas c’est qu’ils étaient inoffensifs et qu’ils protégeaient les gens. Mais les villageois, comme le roi, ne le comprirent pas.</p>
+Mais une fois le jour levé ils disparurent et au fur et à mesure du temps les gens s’y habituèrent et comprirent enfin que les fantômes étaient d’anciens chevaliers chargés de les protéger. 
+
+
+
+
+
+</div>
+
+
+
+ <div class="entry entry--grimoire">
+        <div class="meta">Crédit : 5e Sarraute • Rubrique : Combat</div>
+        <h3 class="entry-title">🕯️ Modèle — Combat (lettrine)</h3>
+        <div class="story lettrine">
+          <p>Colle ici un combat (10–20 lignes). Commence par une phrase forte, puis raconte un événement dans Orthésia.</p>
+          <p>💡 Astuce : 1) Présenter le lieu/personnage. 2) Problème / défi. 3) Solution / morale.</p>
+        </div>
+      </div>
+     <h2>✍️ Combat</h2>     
+
+<div class="meta">Crédit : Loyan• Rubrique : Combats & Boss </div>
+
+<h3> Orthésia et le monstre <h3>
+
+
+A Orthésia le peuple vivait, heureux, derrière une grande muraille. Personne ne savait ce qu’il y avait en dehors des murs.
+</p> Mais un jour une petite fille s’approcha trop près de la muraille et disparut ! Comme ça, sans explication. Mais un jour un monstre apparut.</p>
+
+</p> Des chevaliers attaquèrent ce dernier mais ils moururent tous. Mais alors que tout espoir était perdu, des héros apparurent. Ils vinrent affronter le monstre. D’abord il leur fallut acquérir de l’expérience et au bout d’un mois ils purent l’attaquer.</p>
+
+</p> Ils remportèrent la bataille mais ils étaient vraiment blessés. Après avoir été soignés ils partirent pour de nouvelles aventures.</p>
+
+
+      </div>
+    </section>
+    <section class="card" style="margin-top:12px">
+      <h2>🎨 Galerie</h2>
+      <p>Mets tes images dans un dossier <code>images/</code> à côté de ce fichier.</p>
+
+      <div class="gallery">
+        <div class="imgcard">
+          <div class="ph">Emplacement image 1</div>
+          <div class="cap">🖼️ Titre du dessin — 5e Sarraute</div>
+        </div>
+        <div class="imgcard">
+          <div class="ph">Emplacement image 2</div>
+          <div class="cap">🖼️ Titre du dessin — 5e Sarraute</div>
+        </div>
+        <div class="imgcard">
+          <div class="ph">Emplacement image 3</div>
+          <div class="cap">🖼️ Titre du dessin — 5e Sarraute</div>
+        </div>
+      </div>
+
+      <div class="section">
+        <p style="color:rgba(255,255,255,.8)">✅ Pour afficher une vraie image, remplace un bloc “Emplacement” par :</p>
+<pre style="white-space:pre-wrap; margin:10px 0 0; padding:10px 12px; border-radius:14px; border:1px solid rgba(255,255,255,.12); background:rgba(0,0,0,.22); color:rgba(255,255,255,.82); font-size:12px; line-height:1.4">
+&lt;div class="imgcard"&gt;
+  &lt;img src="images/dessin1.jpg" alt="Dessin Orthésia"&gt;
+  &lt;div class="cap"&gt;🖼️ “Titre” — 5e Sarraute&lt;/div&gt;
+&lt;/div&gt;
+</pre>
+      </div>
+    </section>
+
+    <div class="footer">Orthésia — Archives (Lore) • 5e Sarraute</div>
+  </main>
+</body>
+</html>
